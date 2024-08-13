@@ -1,16 +1,21 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+import { MovieResponse } from "../types/movie";
 
-export const fetchMovies = createAsyncThunk('fetch-movies', async (apiUrl) => {
+export const fetchMovies = createAsyncThunk('fetch-movies', async (apiUrl: string) => {
     const response = await fetch(apiUrl)
     return response.json()
 })
 
+const initialState: MovieResponse = {
+  movies: {
+		results: [],
+	},
+  fetchStatus: '',
+};
+
 const moviesSlice = createSlice({
     name: 'movies',
-    initialState: { 
-        movies: [],
-        fetchStatus: '',
-    },
+    initialState,
     reducers: {},
     extraReducers: (builder) => {
         builder.addCase(fetchMovies.fulfilled, (state, action) => {
