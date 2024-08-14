@@ -2,27 +2,34 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import starredSlice from '../data/starredSlice'
 import Movie from './Movie'
+import { IMovie } from '../types/movie'
+import { IRootState } from '../data/store'
 import '../styles/starred.scss'
 
-const Starred = ({viewTrailer}) => {
 
-    const state = useSelector((state) => state)
-    const { starred } = state
-    const { clearAllStarred } = starredSlice.actions
-    const dispatch = useDispatch()
+interface StarredProps {
+  viewTrailer: (movie: IMovie) => void
+}
+
+const Starred = ({viewTrailer}: StarredProps) => {
+
+  const state = useSelector((state: IRootState) => state)
+  const { starred } = state
+  const { clearAllStarred } = starredSlice.actions
+  const dispatch = useDispatch()
 
   return (
     <div className="starred" data-testid="starred">
       {starred.starredMovies.length > 0 && (<div data-testid="starred-movies" className="starred-movies">
         <h6 className="header">Starred movies</h6>
         <div className="row">
-        {starred.starredMovies.map((movie) => (
-          <Movie 
-            movie={movie} 
-            key={movie.id}
-            viewTrailer={viewTrailer}
-          />
-        ))}
+          {starred.starredMovies.map((movie) => (
+            <Movie
+              movie={movie}
+              key={movie.id}
+              viewTrailer={viewTrailer}
+            />
+          ))}
         </div>
 
         <footer className="text-center">

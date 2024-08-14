@@ -1,12 +1,21 @@
+import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import watchLaterSlice from '../data/watchLaterSlice'
 import Movie from './Movie'
 import '../styles/starred.scss'
+import { IRootState } from '../data/store'
+import { IMovie } from '../types/movie'
 
-const WatchLater = ({viewTrailer}) => {
 
-    const state = useSelector((state) => state)
+
+interface WatchLaterProps {
+    viewTrailer: (movie: IMovie) => void;
+}
+
+const WatchLater = ({viewTrailer}: WatchLaterProps) => {
+
+    const state = useSelector((state: IRootState) => state)
     const { watchLater } = state
     const { remveAllWatchLater } = watchLaterSlice.actions
     const dispatch = useDispatch()
@@ -17,8 +26,8 @@ const WatchLater = ({viewTrailer}) => {
         <h6 className="header">Watch Later List</h6>
         <div className="row">
         {watchLater.watchLaterMovies.map((movie) => (
-          <Movie 
-            movie={movie} 
+          <Movie
+            movie={movie}
             key={movie.id}
             viewTrailer={viewTrailer}
           />

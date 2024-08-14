@@ -1,14 +1,27 @@
 import Movie from './Movie'
+import { IMovie } from '../types/movie'
+
 import '../styles/movies.scss'
 
-const Movies = ({ movies, viewTrailer, closeCard }) => {
+interface MoviesProps {
+    movies: {
+			movies: {
+				results: IMovie[]
+			}
+    },
+    viewTrailer: (movie: IMovie) => void,
+    closeCard: () => void
+}
+
+const Movies = ({ movies, viewTrailer, closeCard }: MoviesProps) => {
+    console.log(movies)
 
     return (
         <div data-testid="movies">
             {movies.movies.results?.map((movie) => {
                 return (
-                    <Movie 
-                        movie={movie} 
+                    <Movie
+                        movie={movie}
                         key={movie.id}
                         viewTrailer={viewTrailer}
                         closeCard={closeCard}
