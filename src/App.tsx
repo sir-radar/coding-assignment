@@ -9,26 +9,30 @@ import Movies from './components/Movies'
 import Starred from './components/Starred'
 import WatchLater from './components/WatchLater'
 import YouTubePlayer from './components/YoutubePlayer'
+
+import { AppDispatch, IRootState } from './data/store'
+
 import './app.scss'
+import { IMovie } from './types/movie'
 
 const App = () => {
 
-  const state = useSelector((state) => state)
-  const { movies } = state  
-  const dispatch = useDispatch()
+  const state = useSelector((state: IRootState) => state)
+  const { movies } = state
+  const dispatch = useDispatch<AppDispatch>()
   const [searchParams, setSearchParams] = useSearchParams()
   const searchQuery = searchParams.get('search')
   const [videoKey, setVideoKey] = useState()
   const [isOpen, setOpen] = useState(false)
   const navigate = useNavigate()
-  
+
   const closeModal = () => setOpen(false)
-  
+
   const closeCard = () => {
 
   }
 
-  const getSearchResults = (query) => {
+  const getSearchResults = (query: string) => {
     if (query !== '') {
       dispatch(fetchMovies(`${ENDPOINT_SEARCH}&query=`+query))
       setSearchParams(createSearchParams({ search: query }))
@@ -38,7 +42,7 @@ const App = () => {
     }
   }
 
-  const searchMovies = (query) => {
+  const searchMovies = (query: string) => {
     navigate('/')
     getSearchResults(query)
   }
@@ -51,16 +55,16 @@ const App = () => {
     }
   }
 
-  const viewTrailer = (movie) => {
+  const viewTrailer = (movie: IMovie) => {
     getMovie(movie.id)
     if (!videoKey) setOpen(true)
     setOpen(true)
   }
 
-  const getMovie = async (id) => {
+  const getMovie = async (id: string) => {
     const URL = `${ENDPOINT}/movie/${id}?api_key=${API_KEY}&append_to_response=videos`
 
-    setVideoKey(null)
+    setVideoKey(undefined)
     const videoData = await fetch(URL)
       .then((response) => response.json())
 
@@ -76,7 +80,7 @@ const App = () => {
 
   return (
     <div className="App">
-      <Header searchMovies={searchMovies} searchParams={searchParams} setSearchParams={setSearchParams} />
+      <Header searchMovies={searchMovies} />
 
       <div className="container">
         {videoKey ? (

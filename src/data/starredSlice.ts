@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit"
 import { IMovie } from "../types/movie";
 
-interface StarredState {
+export interface StarredState {
   starredMovies: IMovie[];
 }
 

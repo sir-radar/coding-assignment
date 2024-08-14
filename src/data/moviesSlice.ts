@@ -8,7 +8,7 @@ export const fetchMovies = createAsyncThunk('fetch-movies', async (apiUrl: strin
 
 const initialState: MovieResponse = {
   movies: {
-		results: [],
+	  results: [],
 	},
   fetchStatus: '',
 };

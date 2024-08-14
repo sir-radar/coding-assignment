@@ -37,5 +37,5 @@ it('renders starred component', async() => {
   expect(screen.getByText(/There are no starred movies/i)).toBeInTheDocument()
   await waitFor(() => {
     expect(screen.getByTestId('starred')).toBeInTheDocument()
-  })  
+  })
 })

@@ -14,8 +14,6 @@ interface MoviesProps {
 }
 
 const Movies = ({ movies, viewTrailer, closeCard }: MoviesProps) => {
-    console.log(movies)
-
     return (
         <div data-testid="movies">
             {movies.movies.results?.map((movie) => {

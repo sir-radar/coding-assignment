@@ -7,18 +7,35 @@ import { setupListeners } from '@reduxjs/toolkit/dist/query'
 import moviesSlice from '../data/moviesSlice'
 import starredSlice from '../data/starredSlice'
 import watchLaterSlice from '../data/watchLaterSlice'
+import { IRootState } from '../data/store';
+
+
+const preloadedState: IRootState = {
+  movies: {
+    movies: {
+      results: [],
+    },
+    fetchStatus: '',
+  },
+  starred: {
+    starredMovies: [],
+  },
+  watchLater: {
+    watchLaterMovies: [],
+  }
+}
 
 export function renderWithProviders(
-  ui,
+  ui: React.ReactElement<any, string | React.JSXElementConstructor<any>>,
   {
-    preloadedState = {},
+    preloadedState:IRootState  = {},
     store = configureStore({
-      reducer: { 
-        movies: moviesSlice.reducer, 
+      reducer: {
+        movies: moviesSlice.reducer,
         starred: starredSlice.reducer,
         watchLater: watchLaterSlice.reducer
       },
-      preloadedState,
+      preloadedState: preloadedState,
     }),
     ...renderOptions
   } = {}
@@ -26,7 +43,7 @@ export function renderWithProviders(
 
   setupListeners(store.dispatch)
 
-  function Wrapper({ children }) {
+  function Wrapper({ children }:{ children: React.ReactNode }) {
     return <Provider store={store}><BrowserRouter>{children}</BrowserRouter></Provider>;
   }
 
