@@ -36,15 +36,13 @@ const Header: React.FC<HeaderProps> = ({ searchMovies }) => {
       </nav>
 
       <div className="input-group rounded">
-        <Link to="/" onClick={(e) => searchMovies('')} className="search-link" >
-          <input type="search" data-testid="search-movies"
-            onKeyUp={(e) => searchMovies(e.currentTarget.value)}
-            className="form-control rounded"
-            placeholder="Search movies..."
-            aria-label="Search movies"
-            aria-describedby="search-addon"
-            />
-        </Link>
+				<input type="search" data-testid="search-movies"
+					onKeyUp={(e) => searchMovies(e.currentTarget.value)}
+					className="form-control rounded"
+					placeholder="Search movies..."
+					aria-label="Search movies"
+					aria-describedby="search-addon"
+					/>
       </div>
     </header>
   )
