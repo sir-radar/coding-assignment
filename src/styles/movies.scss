@@ -302,6 +302,7 @@
 .movies {
 	display: flex;
 	flex-wrap: wrap;
+    position: relative;
 
 	@media (max-width: 480px) {
     justify-content: center;
