@@ -5,7 +5,8 @@ import Header from './components/Header'
 import Movies from './components/Movies'
 import Starred from './components/Starred'
 import WatchLater from './components/WatchLater'
-import YouTubePlayer from './components/YoutubePlayer'
+import YoutubePlayer from './components/YoutubePlayer'
+import Modal from './components/Modal'
 
 import { IMovie } from './types/movie'
 import { useGetMovies } from './hooks/useGetMovies'
@@ -13,6 +14,7 @@ import { useGetMovie } from './hooks/useGetMovie'
 import { useDebounce } from './hooks/useDebounce'
 
 import './app.scss'
+
 
 const App = () => {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -46,13 +48,9 @@ const App = () => {
       <Header searchMovies={searchMovies} />
 
       <div className="container">
-        {videoKey ? (
-          <YouTubePlayer
-            videoKey={videoKey}
-          />
-        ) : (
-          <div style={{padding: "30px"}}><h6>no trailer available. Try another movie</h6></div>
-        )}
+        <Modal showContent={isOpen} closeModal={closeModal}>
+          <YoutubePlayer videoKey={videoKey!} loading={loading} error={error} />
+        </Modal>
 
         <Routes>
           <Route path="/" element={<Movies viewTrailer={viewTrailer} />} />

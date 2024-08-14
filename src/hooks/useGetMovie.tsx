@@ -4,20 +4,20 @@ import { API_KEY, ENDPOINT } from '../constants';
 interface UseGetMovieResult {
   videoKey: string | undefined;
   loading: boolean;
-  error: string | null;
+  error?: string;
   getMovie: (id: string) => Promise<void>;
 }
 
 export const useGetMovie = (): UseGetMovieResult => {
   const [videoKey, setVideoKey] = useState<string | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | undefined>(undefined);
 
   const getMovie = useCallback(async (id: string) => {
     const URL = `${ENDPOINT}/movie/${id}?api_key=${API_KEY}&append_to_response=videos`
 
     setLoading(true);
-    setError(null);
+    setError(undefined);
     setVideoKey(undefined);
 
     try {
