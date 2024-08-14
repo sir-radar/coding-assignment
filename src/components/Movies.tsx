@@ -30,11 +30,11 @@ const Movies = ({ viewTrailer, handleInfiniteScroll, currentPage }: MoviesProps)
 
     return (
         <div data-testid="movies" className="movies">
-					{movies.movies.results?.map((movie) => {
+					{movies.movies.results?.map((movie, i) => {
 						return (
 							<Movie
 								movie={movie}
-								key={movie.id}
+								key={`movie-${i}-${movie.id}`}
 								viewTrailer={viewTrailer}
 							/>
 						)
