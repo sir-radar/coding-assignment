@@ -4,9 +4,11 @@ import { useAppSelector } from '../hooks/useAppSelector'
 import { useGetMovies } from '../hooks/useGetMovies'
 
 import Movie from './Movie'
+import Loader from './Loader'
 import { IMovie } from '../types/movie'
 
 import '../styles/movies.scss'
+
 
 interface MoviesProps {
     viewTrailer: (movie: IMovie) => void,
@@ -34,6 +36,8 @@ const Movies = ({ viewTrailer }: MoviesProps) => {
                     />
                 )
             })}
+            {movies.fetchStatus === 'loading' && <Loader />}
+			{movies.fetchStatus === 'error' && <h4>Error fetching movies</h4>}
         </div>
     )
 }
