@@ -8,7 +8,7 @@ import WatchLater from './components/WatchLater'
 import YoutubePlayer from './components/YoutubePlayer'
 import Modal from './components/Modal'
 
-import { IMovie } from './types/movie'
+import { FetchType, IMovie } from './types/movie'
 import { useGetMovies } from './hooks/useGetMovies'
 import { useGetMovie } from './hooks/useGetMovie'
 import { useDebounce } from './hooks/useDebounce'
@@ -30,11 +30,11 @@ const App = () => {
   const closeModal = () => setOpen(false)
 
   const { setCurrentPage, currentPage, handleInfiniteScroll } = useInfiniteScroll(() => {
-		getMovies(searchQuery, currentPage + 1)
+		getMovies(searchQuery, currentPage + 1, FetchType.DISCOVER)
 	})
 
   const getSearchResults = useDebounce((query: string) => {
-    getMovies(query, 1, 'search')
+    getMovies(query, 1, FetchType.SEARCH)
   }, 700);
 
   const searchMovies = (query: string) => {

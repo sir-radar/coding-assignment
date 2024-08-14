@@ -12,3 +12,8 @@ export interface MovieResponse {
 	}
 	fetchStatus: string;
 }
+
+export enum FetchType {
+	SEARCH = 'search',
+	DISCOVER = 'discover',
+}

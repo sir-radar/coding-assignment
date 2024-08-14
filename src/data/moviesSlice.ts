@@ -1,9 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { IMovie, MovieResponse } from "../types/movie";
+import { FetchType, IMovie, MovieResponse } from "../types/movie";
 
 interface FetchMovieParams {
 	apiUrl: string
-	type: string
+	type: FetchType
 }
 
 export const fetchMovies = createAsyncThunk('fetch-movies', async({ apiUrl, type }: FetchMovieParams ) => {
@@ -24,12 +24,13 @@ const moviesSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder.addCase(fetchMovies.fulfilled, (state, action) => {
-					if(action.payload.type === 'search') {
+					if (action.payload.type === FetchType.SEARCH) {
 						state.movies = action.payload.response
+						state.fetchStatus = 'success'
 						return
 					}
 					const results: IMovie[] = action.payload.response?.results || []
-					state.movies = { results: [ ...state.movies.results, ...results ] }
+					state.movies = { results: [...state.movies.results, ...results] }
 					state.fetchStatus = 'success'
         }).addCase(fetchMovies.pending, (state) => {
             state.fetchStatus = 'loading'
