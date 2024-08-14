@@ -3,7 +3,7 @@
     color: #fff;
 
     @media (max-width: 720px) {
-        padding-top: 70px;        
+        padding-top: 70px;
     }
 
     a {
@@ -16,7 +16,7 @@
         margin-bottom: 2rem;
     }
 
-    .card, 
+    .card,
     .card *,
     .card + * {
         -webkit-transition: all .2s ease-in-out;
@@ -34,24 +34,24 @@
         padding: 20% 5% 0;
         color: #fff;
         background: transparent;
-    
+
         @media (max-width: 720px) {
             padding: 8% 5% 0;
         }
-    
+
         @media (max-width: 480px) {
             padding-top: 50%;
         }
-    
+
         .bi-star:hover {
             color: #e50914;
         }
-    
+
         .bi-star-fill {
             margin: 0 5px;
             color: #e50914;
         }
-    
+
         .overview {
             height: 85px;
             padding: 5px;
@@ -59,13 +59,13 @@
             overflow: scroll;
             font-size: 0.7rem;
             line-height: 105%;
-    
+
             @media (max-width: 720px) {
                 height: 60px;
                 padding: 3px;
-                margin-bottom: 2px;                    
+                margin-bottom: 2px;
             }
-    
+
             @media (max-width: 480px) {
                 height: 185px;
                 margin-bottom: 40px;
@@ -73,7 +73,7 @@
                 line-height: 115%;
             }
         }
-    }    
+    }
 
     .overlay,
     .info_panel {
@@ -81,7 +81,7 @@
         top: 0;
         left: 0;
         width: 100%;
-        height: 100%;            
+        height: 100%;
         opacity: 0;
         -webkit-transition: opacity .4s ease-in-out;
         -moz-transition: opacity .4s ease-in-out;
@@ -97,24 +97,24 @@
 
     button.close {
         display: none;
-    }    
-    
+    }
+
 
     .card-body {
         position: relative;
         padding: 0;
 
         &:hover {
-            border: 2px solid #fff;            
+            border: 2px solid #fff;
         }
     }
-    
+
     .year {
         padding: 0.2rem 0 0.4rem;
         font-size: 0.7rem;
         @media (max-width: 480px) {
             position: absolute;
-            right: 0;            
+            right: 0;
             bottom: 67%;
             left: 0;
             padding: 0 0 10px;
@@ -133,7 +133,7 @@
         cursor: pointer;
         @media (max-width: 520px) {
             font-size: 25px;
-        }        
+        }
     }
     button {
         display: block;
@@ -152,11 +152,11 @@
         @media (max-width: 480px) {
             margin: 15px auto;
             height: 35px;
-            font-size: 1rem;            
+            font-size: 1rem;
         }
 
         &.btn-watch-later {
-        
+
             &.blue {
                 color: #fff;
                 background-color: #1CB5E0;
@@ -191,8 +191,8 @@
         }
     }
 
-    &:hover { 
-        transform: scale(1.1); 
+    &:hover {
+        transform: scale(1.1);
 
         .overlay {
             opacity: .8;
@@ -205,8 +205,8 @@
     }
 
     @media (max-width: 480px) {
-        &:hover { 
-            transform: none; 
+        &:hover {
+            transform: none;
 
             .overlay {
                 opacity: 0;
@@ -217,15 +217,15 @@
             }
         }
     }
- 
+
 
     h6.title {
         margin-top: 10px;
         font-size: 0.9rem;
-        
+
         &.mobile-card {
             display: none;
-        }            
+        }
         @media (max-width: 480px), (hover: none) {
             display: none;
 
@@ -240,7 +240,7 @@
     }
 
     @media (max-width: 480px) {
-        &.opened { 
+        &.opened {
             position: fixed;
             top: 0;
             left: 0;
@@ -257,7 +257,7 @@
             .info_panel {
                 display: block;
                 opacity: 1;
-            }                
+            }
 
             h6.title {
                 display: none;
@@ -293,8 +293,22 @@
             }
         }
     }
-    
+
     @media (max-width: 720px) {
         background-color: transparent;
-    }    
+    }
+}
+
+.movies {
+	display: flex;
+	flex-wrap: wrap;
+
+	@media (max-width: 480px) {
+    justify-content: center;
+
+		.wrapper{
+			width: 80%;
+		}
+  }
+
 }
