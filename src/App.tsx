@@ -1,26 +1,25 @@
 import { useState } from 'react'
 import { Routes, Route, createSearchParams, useSearchParams, useNavigate } from "react-router-dom"
 import 'reactjs-popup/dist/index.css'
-import {  ENDPOINT, API_KEY } from './constants'
 import Header from './components/Header'
 import Movies from './components/Movies'
 import Starred from './components/Starred'
 import WatchLater from './components/WatchLater'
 import YouTubePlayer from './components/YoutubePlayer'
 
-
-import './app.scss'
 import { IMovie } from './types/movie'
 import { useGetMovies } from './hooks/useGetMovies'
+import { useGetMovie } from './hooks/useGetMovie'
+
+import './app.scss'
 
 const App = () => {
-
   const [searchParams, setSearchParams] = useSearchParams()
-  const [videoKey, setVideoKey] = useState()
   const [isOpen, setOpen] = useState(false)
   const navigate = useNavigate()
   const searchQuery = searchParams.get('search')
-  const getMovies = useGetMovies(searchQuery)
+	const getMovies = useGetMovies(searchQuery)
+	const { videoKey, loading, error, getMovie } = useGetMovie();
 
   const closeModal = () => setOpen(false)
 
@@ -43,20 +42,6 @@ const App = () => {
 		if (!videoKey) setOpen(true)
 		setOpen(true)
 	}
-
-
-  const getMovie = async (id: string) => {
-    const URL = `${ENDPOINT}/movie/${id}?api_key=${API_KEY}&append_to_response=videos`
-
-    setVideoKey(undefined)
-    const videoData = await fetch(URL)
-      .then((response) => response.json())
-
-    if (videoData.videos && videoData.videos.results.length) {
-      const trailer = videoData.videos.results.find(vid => vid.type === 'Trailer')
-      setVideoKey(trailer ? trailer.key : videoData.videos.results[0].key)
-    }
-  }
 
   return (
     <div className="App">
