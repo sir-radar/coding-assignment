@@ -6,9 +6,9 @@ import { ENDPOINT_DISCOVER, ENDPOINT_SEARCH } from '../constants';
 export const useGetMovies = (searchQuery: string | null) => {
   const dispatch = useAppDispatch();
 
-  const getMovies = useCallback((newQuery?: string, page: number = 1) => {
+  const getMovies = useCallback((newQuery: string | null, page: number = 1, type:string = 'discover') => {
     const endpoint = searchQuery ? `${ENDPOINT_SEARCH}&query=${newQuery ? newQuery : searchQuery}&page=${page}` : `${ENDPOINT_DISCOVER}&page=${page}`;
-    dispatch(fetchMovies(endpoint));
+    dispatch(fetchMovies({ apiUrl: endpoint, type }));
   }, [dispatch, searchQuery]);
 
   return getMovies;

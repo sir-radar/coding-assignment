@@ -11,33 +11,37 @@ import '../styles/movies.scss'
 
 
 interface MoviesProps {
-    viewTrailer: (movie: IMovie) => void,
+	viewTrailer: (movie: IMovie) => void,
+	handleInfiniteScroll: () => void,
+	currentPage: number
 }
 
-const Movies = ({ viewTrailer }: MoviesProps) => {
+const Movies = ({ viewTrailer, handleInfiniteScroll, currentPage }: MoviesProps) => {
 	const state = useAppSelector((state) => state)
-  const { movies } = state
-  const [searchParams] = useSearchParams()
+	const { movies } = state
+	const [searchParams] = useSearchParams()
 	const searchQuery = searchParams.get('search')
 	const getMovies = useGetMovies(searchQuery)
 
 	useEffect(() => {
-		getMovies()
+		handleInfiniteScroll()
+		getMovies(searchQuery, currentPage)
 	}, [])
 
     return (
         <div data-testid="movies" className="movies">
-            {movies.movies.results?.map((movie) => {
-                return (
-                    <Movie
-                        movie={movie}
-                        key={movie.id}
-                        viewTrailer={viewTrailer}
-                    />
-                )
-            })}
-            {movies.fetchStatus === 'loading' && <Loader />}
-			{movies.fetchStatus === 'error' && <h4>Error fetching movies</h4>}
+					{movies.movies.results?.map((movie) => {
+						return (
+							<Movie
+								movie={movie}
+								key={movie.id}
+								viewTrailer={viewTrailer}
+							/>
+						)
+					})}
+					{movies.movies.results?.length === 0 && <h4>No movies found</h4>}
+					{movies.fetchStatus === 'loading' && <Loader />}
+					{movies.fetchStatus === 'error' && <h4>Error fetching movies</h4>}
         </div>
     )
 }

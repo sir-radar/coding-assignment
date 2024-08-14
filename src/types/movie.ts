@@ -9,6 +9,6 @@ export interface IMovie {
 export interface MovieResponse {
 	movies: {
 			results: IMovie[]
-	},
+	}
 	fetchStatus: string;
 }
