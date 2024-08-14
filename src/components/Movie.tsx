@@ -1,28 +1,45 @@
-import { useDispatch, useSelector } from 'react-redux'
 import starredSlice from '../data/starredSlice'
 import watchLaterSlice from '../data/watchLaterSlice'
 import placeholder from '../assets/not-found-500X750.jpeg'
-import { IRootState } from '../data/store'
 import { IMovie } from '../types/movie'
+import { useAppDispatch } from '../hooks/useAppDispatch'
+import { useAppSelector } from '../hooks/useAppSelector'
+import { ENDPOINT_MOVIE_POSTER } from '../constants'
 
 interface MovieProps {
     movie: IMovie
     viewTrailer: (movie: IMovie) => void
-    closeCard?: () => void
 }
 
 
-const Movie = ({ movie, viewTrailer, closeCard }: MovieProps) => {
+const Movie = ({ movie, viewTrailer }: MovieProps) => {
 
-    const state = useSelector((state: IRootState) => state)
-    const { starred, watchLater } = state
-    const { starMovie, unstarMovie } = starredSlice.actions
-    const { addToWatchLater, removeFromWatchLater } = watchLaterSlice.actions
+    const { starred, watchLater } = useAppSelector((state) => state);
+	const { starMovie, unstarMovie } = starredSlice.actions
+	const { addToWatchLater, removeFromWatchLater } = watchLaterSlice.actions
+    const dispatch = useAppDispatch();
 
+    const toggleStar = () => {
+		const isStarred = starred.starredMovies.some(m => m.id === movie.id);
+		const action = isStarred ? unstarMovie : starMovie;
+		dispatch(action({ ...movie }));
+	};
 
-    const dispatch = useDispatch()
+	const toggleWatchLater = () => {
+		const isWatchLater = watchLater.watchLaterMovies.some(m => m.id === movie.id);
+		const action = isWatchLater ? removeFromWatchLater : addToWatchLater;
+		dispatch(action({ ...movie }));
+	};
 
-    const myClickHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+	const isMovieStarred = (movie: IMovie) => {
+		return starred.starredMovies.some(m => m.id === movie.id);
+	};
+
+	const isMovieInWatchLater = (movie: IMovie) => {
+		return watchLater.watchLaterMovies.some(m => m.id === movie.id);
+	};
+
+    const closeCard = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.stopPropagation()
         e?.currentTarget?.parentElement?.classList?.remove('opened')
     }
@@ -31,45 +48,23 @@ const Movie = ({ movie, viewTrailer, closeCard }: MovieProps) => {
         <div className="wrapper col-3 col-sm-4 col-md-3 col-lg-3 col-xl-2">
         <div className="card" onClick={(e) => e.currentTarget.classList.add('opened')} >
             <div className="card-body text-center">
-                <div className="overlay" />
-                <div className="info_panel">
-                    <div className="overview">{movie.overview}</div>
-                    <div className="year">{movie.release_date?.substring(0, 4)}</div>
-                    {!starred.starredMovies.map(movie => movie.id).includes(movie.id) ? (
-                        <span className="btn-star" data-testid="starred-link" onClick={() =>
-                            dispatch(starMovie({
-                                id: movie.id,
-                                overview: movie.overview,
-                                release_date: movie.release_date?.substring(0, 4),
-                                poster_path: movie.poster_path,
-                                title: movie.title
-                            })
-                        )}>
-                            <i className="bi bi-star" />
-                        </span>
-                    ) : (
-                        <span className="btn-star" data-testid="unstar-link" onClick={() => dispatch(unstarMovie(movie))}>
-                            <i className="bi bi-star-fill" data-testid="star-fill" />
-                        </span>
-                    )}
-                    {!watchLater.watchLaterMovies.map(movie => movie.id).includes(movie.id) ? (
-                        <button type="button" data-testid="watch-later" className="btn btn-light btn-watch-later" onClick={() => dispatch(addToWatchLater({
-                                id: movie.id,
-                                overview: movie.overview,
-                                release_date: movie.release_date?.substring(0, 4),
-                                poster_path: movie.poster_path,
-                                title: movie.title
-                        }))}>Watch Later</button>
-                    ) : (
-                        <button type="button" data-testid="remove-watch-later" className="btn btn-light btn-watch-later blue" onClick={() => dispatch(removeFromWatchLater(movie))}><i className="bi bi-check"></i></button>
-                    )}
-                    <button type="button" className="btn btn-dark" onClick={() => viewTrailer(movie)}>View Trailer</button>
-                </div>
-                <img className="center-block" src={(movie.poster_path) ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}` : placeholder} alt="Movie poster" />
-            </div>
+					<div className="overlay" />
+					<div className="info_panel">
+						<div className="overview">{movie.overview}</div>
+						<div className="year">{movie.release_date?.substring(0, 4)}</div>
+						<span className="btn-star" data-testid={`${isMovieStarred(movie) ? 'unstar' : 'starred'}-link`} onClick={toggleStar}>
+							<i className={`bi bi-${isMovieStarred(movie) ? 'star-fill' : 'star'}`}  data-testid={`${isMovieStarred(movie) ? 'star-fill' : ''}`}/>
+						</span>
+						<button type="button" data-testid={`${isMovieInWatchLater(movie) ? 'remove-watch-later' : 'watch-later'}`} className="btn btn-light btn-watch-later" onClick={toggleWatchLater}>
+							{isMovieInWatchLater(movie) ? <i className="bi bi-check" /> : 'Watch Later'}
+						</button>
+						<button type="button" className="btn btn-dark" onClick={() => viewTrailer(movie)}>View Trailer</button>
+					</div>
+					<img loading="lazy" className="center-block" src={(movie.poster_path) ? `${ENDPOINT_MOVIE_POSTER}/${movie.poster_path}` : placeholder} alt="Movie poster" />
+				</div>
             <h6 className="title mobile-card">{movie.title}</h6>
             <h6 className="title">{movie.title}</h6>
-            <button type="button" className="close" onClick={(e) => myClickHandler(e)} aria-label="Close">
+            <button type="button" className="close" onClick={(e) => closeCard(e)} aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>

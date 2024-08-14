@@ -10,10 +10,9 @@ import '../styles/movies.scss'
 
 interface MoviesProps {
     viewTrailer: (movie: IMovie) => void,
-    closeCard: () => void
 }
 
-const Movies = ({ viewTrailer, closeCard }: MoviesProps) => {
+const Movies = ({ viewTrailer }: MoviesProps) => {
 	const state = useAppSelector((state) => state)
   const { movies } = state
   const [searchParams] = useSearchParams()
@@ -32,7 +31,6 @@ const Movies = ({ viewTrailer, closeCard }: MoviesProps) => {
                         movie={movie}
                         key={movie.id}
                         viewTrailer={viewTrailer}
-                        closeCard={closeCard}
                     />
                 )
             })}

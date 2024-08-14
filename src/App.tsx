@@ -24,9 +24,6 @@ const App = () => {
 
   const closeModal = () => setOpen(false)
 
-  const closeCard = () => {
-
-  }
 
   const getSearchResults = useDebounce((query: string) => {
     getMovies(query)
@@ -58,7 +55,7 @@ const App = () => {
         )}
 
         <Routes>
-          <Route path="/" element={<Movies viewTrailer={viewTrailer} closeCard={closeCard} />} />
+          <Route path="/" element={<Movies viewTrailer={viewTrailer} />} />
           <Route path="/starred" element={<Starred viewTrailer={viewTrailer} />} />
           <Route path="/watch-later" element={<WatchLater viewTrailer={viewTrailer} />} />
           <Route path="*" element={<h1 className="not-found">Page Not Found</h1>} />
