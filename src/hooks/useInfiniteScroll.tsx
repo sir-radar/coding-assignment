@@ -4,10 +4,10 @@ export const useInfiniteScroll = (callback?: () => void) => {
   const [currentPage, setCurrentPage] = useState<number>(1);
 
   const handleInfiniteScroll = useCallback(() => {
-    const { innerHeight, scrollY } = window;
-		const { offsetHeight } = document.documentElement;
+    const { innerHeight } = window;
+		const { scrollTop, scrollHeight } = document.documentElement;
 
-    if (innerHeight + scrollY >= offsetHeight - 1) {
+    if (innerHeight + scrollTop + 1 >= scrollHeight) {
 			if (callback) {
 				setCurrentPage((prev) => prev + 1);
         callback();
