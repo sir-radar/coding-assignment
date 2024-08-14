@@ -10,6 +10,7 @@ import YouTubePlayer from './components/YoutubePlayer'
 import { IMovie } from './types/movie'
 import { useGetMovies } from './hooks/useGetMovies'
 import { useGetMovie } from './hooks/useGetMovie'
+import { useDebounce } from './hooks/useDebounce'
 
 import './app.scss'
 
@@ -27,13 +28,13 @@ const App = () => {
 
   }
 
-  const getSearchResults = (query: string) => {
-    setSearchParams(createSearchParams({ search: query }))
+  const getSearchResults = useDebounce((query: string) => {
     getMovies(query)
-  }
+  }, 700);
 
   const searchMovies = (query: string) => {
     navigate('/')
+    setSearchParams(createSearchParams({ search: query }))
     getSearchResults(query)
   }
 
