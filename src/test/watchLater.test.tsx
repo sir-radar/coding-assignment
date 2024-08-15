@@ -7,9 +7,10 @@ it('Watch Later movies page', async () => {
     renderWithProviders(<App />)
 
     await userEvent.type(screen.getByTestId('search-movies'), 'forrest gump')
-    await waitFor(() => {
-      expect(screen.getAllByText('Through the Eyes of Forrest Gump')[0]).toBeInTheDocument()
-    })
+
+    const movieTitle = await screen.findAllByText('Through the Eyes of Forrest Gump')
+    expect(movieTitle[0]).toBeInTheDocument();
+
     const watchLaterLink = screen.getAllByTestId('watch-later')[0]
     await waitFor(() => {
         expect(watchLaterLink).toBeInTheDocument()
