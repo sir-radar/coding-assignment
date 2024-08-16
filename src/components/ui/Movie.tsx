@@ -1,11 +1,15 @@
 import CloseButton from './CloseButton'
-import starredSlice from '../data/starredSlice'
-import watchLaterSlice from '../data/watchLaterSlice'
-import placeholder from '../assets/not-found-500X750.jpeg'
-import { IMovie } from '../types/movie'
-import { useAppDispatch } from '../hooks/useAppDispatch'
-import { useAppSelector } from '../hooks/useAppSelector'
-import { ENDPOINT_MOVIE_POSTER } from '../constants'
+
+import starredSlice from '../../data/starredSlice'
+import watchLaterSlice from '../../data/watchLaterSlice'
+
+import { useAppDispatch } from '../../hooks/useAppDispatch'
+import { useAppSelector } from '../../hooks/useAppSelector'
+
+import { IMovie } from '../../types/movie'
+import { ENDPOINT_MOVIE_POSTER } from '../../constants'
+
+import placeholder from '../../assets/not-found-500X750.jpeg'
 
 
 interface MovieProps {
@@ -16,12 +20,12 @@ interface MovieProps {
 
 const Movie = ({ movie, viewTrailer }: MovieProps) => {
 
-    const { starred, watchLater } = useAppSelector((state) => state);
+  const { starred, watchLater } = useAppSelector((state) => state);
 	const { starMovie, unstarMovie } = starredSlice.actions
 	const { addToWatchLater, removeFromWatchLater } = watchLaterSlice.actions
-    const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
 
-    const toggleStar = () => {
+  const toggleStar = () => {
 		const isStarred = starred.starredMovies.some(m => m.id === movie.id);
 		const action = isStarred ? unstarMovie : starMovie;
 		dispatch(action({ ...movie }));
@@ -41,10 +45,10 @@ const Movie = ({ movie, viewTrailer }: MovieProps) => {
 		return watchLater.watchLaterMovies.some(m => m.id === movie.id);
 	};
 
-    const closeCard = (e?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        e?.stopPropagation()
-        e?.currentTarget?.parentElement?.classList?.remove('opened')
-    }
+  const closeCard = (e?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+		e?.stopPropagation()
+		e?.currentTarget?.parentElement?.classList?.remove('opened')
+  }
 
     return (
         <div className="wrapper col-3 col-sm-4 col-md-3 col-lg-3 col-xl-2">

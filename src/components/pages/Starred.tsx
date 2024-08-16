@@ -1,11 +1,15 @@
 import { Link } from 'react-router-dom'
-import starredSlice from '../data/starredSlice'
-import Movie from './Movie'
-import { IMovie } from '../types/movie'
-import { useAppSelector } from '../hooks/useAppSelector'
-import { useAppDispatch } from '../hooks/useAppDispatch'
 
-import '../styles/starred.scss'
+import { useAppSelector } from '../../hooks/useAppSelector'
+import { useAppDispatch } from '../../hooks/useAppDispatch'
+
+import { Movie } from '../ui'
+
+import starredSlice from '../../data/starredSlice'
+
+import { IMovie } from '../../types/movie'
+
+import '../../styles/starred.scss'
 
 interface StarredProps {
   viewTrailer: (movie: IMovie) => void

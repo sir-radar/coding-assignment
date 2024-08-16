@@ -1,11 +1,15 @@
 import { Link } from 'react-router-dom'
-import watchLaterSlice from '../data/watchLaterSlice'
-import Movie from './Movie'
-import { IMovie} from '../types/movie'
-import { useAppSelector } from '../hooks/useAppSelector'
-import { useAppDispatch } from '../hooks/useAppDispatch'
 
-import '../styles/starred.scss'
+import { useAppSelector } from '../../hooks/useAppSelector'
+import { useAppDispatch } from '../../hooks/useAppDispatch'
+
+import { Movie } from '../ui'
+
+import watchLaterSlice from '../../data/watchLaterSlice'
+
+import { IMovie} from '../../types/movie'
+
+import '../../styles/starred.scss'
 
 
 interface WatchLaterProps {

@@ -1,12 +1,11 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { Routes, Route, createSearchParams, useSearchParams, useNavigate } from "react-router-dom"
 import 'reactjs-popup/dist/index.css'
-import Header from './components/Header'
-import Movies from './components/Movies'
-import Starred from './components/Starred'
-import WatchLater from './components/WatchLater'
-import YoutubePlayer from './components/YoutubePlayer'
-import Modal from './components/Modal'
+import Movies from './components/pages/Movies'
+import Starred from './components/pages/Starred'
+import WatchLater from './components/pages/WatchLater'
+
+import { Header, YoutubePlayer, Modal } from './components/ui'
 
 import { FetchType, IMovie } from './types/movie'
 import { useGetMovies } from './hooks/useGetMovies'

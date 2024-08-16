@@ -1,8 +1,9 @@
 import { Link, NavLink } from "react-router-dom"
 import { useSelector } from 'react-redux'
 
-import '../styles/header.scss'
-import { IRootState } from "../data/store"
+import { IRootState } from "../../data/store"
+
+import '../../styles/header.scss'
 
 
 interface HeaderProps {

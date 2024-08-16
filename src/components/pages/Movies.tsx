@@ -1,13 +1,13 @@
 import { useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { useAppSelector } from '../hooks/useAppSelector'
-import { useGetMovies } from '../hooks/useGetMovies'
+import { useAppSelector } from '../../hooks/useAppSelector'
+import { useGetMovies } from '../../hooks/useGetMovies'
 
-import Movie from './Movie'
-import Loader from './Loader'
-import { IMovie } from '../types/movie'
+import { Movie, Loader } from '../ui'
 
-import '../styles/movies.scss'
+import { IMovie } from '../../types/movie'
+
+import '../../styles/movies.scss'
 
 
 interface MoviesProps {

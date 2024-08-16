@@ -1,5 +1,5 @@
 import { render, screen, act } from '@testing-library/react';
-import YoutubePlayer from '../components/YoutubePlayer';
+import YoutubePlayer from '../components/ui/YoutubePlayer';
 
 describe('YoutubePlayer', () => {
   it('renders loading state', async () => {

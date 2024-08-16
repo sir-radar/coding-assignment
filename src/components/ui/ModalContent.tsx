@@ -1,6 +1,6 @@
 import CloseButton from "./CloseButton"
 
-import "../styles/modal.scss"
+import "../../styles/modal.scss"
 
 interface ModalContentProps {
   children: React.ReactNode
