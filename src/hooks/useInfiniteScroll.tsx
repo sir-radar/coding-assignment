@@ -16,7 +16,7 @@ export const useInfiniteScroll = (callback: CallbackType,total_pages: number, qu
       }
 
     }
-	}, [query, callback]);
+	}, [query,total_pages, callback]);
 
   useEffect(() => {
     window.addEventListener('scroll', initInfiniteScroll);
