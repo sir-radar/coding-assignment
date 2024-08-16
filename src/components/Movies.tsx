@@ -12,11 +12,9 @@ import '../styles/movies.scss'
 
 interface MoviesProps {
 	viewTrailer: (movie: IMovie) => void,
-	handleInfiniteScroll: () => void,
-	currentPage: number
 }
 
-const Movies = ({ viewTrailer, handleInfiniteScroll, currentPage }: MoviesProps) => {
+const Movies = ({ viewTrailer }: MoviesProps) => {
 	const state = useAppSelector((state) => state)
 	const { movies } = state
 	const [searchParams] = useSearchParams()
@@ -24,8 +22,7 @@ const Movies = ({ viewTrailer, handleInfiniteScroll, currentPage }: MoviesProps)
 	const getMovies = useGetMovies(searchQuery)
 
 	useEffect(() => {
-		handleInfiniteScroll()
-		getMovies(searchQuery, currentPage)
+		getMovies(searchQuery)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 

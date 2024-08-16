@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Routes, Route, createSearchParams, useSearchParams, useNavigate } from "react-router-dom"
 import 'reactjs-popup/dist/index.css'
 import Header from './components/Header'
@@ -29,9 +29,9 @@ const App = () => {
 
   const closeModal = () => setOpen(false)
 
-  const { setCurrentPage, currentPage, handleInfiniteScroll } = useInfiniteScroll(() => {
-		getMovies(searchQuery, currentPage + 1, FetchType.DISCOVER)
-	})
+  const { currentPage, initInfiniteScroll } = useInfiniteScroll((query) => {
+    getMovies(query, currentPage.current, FetchType.DISCOVER)
+	}, searchQuery)
 
   const getSearchResults = useDebounce((query: string) => {
     getMovies(query, 1, FetchType.SEARCH)
@@ -39,8 +39,8 @@ const App = () => {
 
   const searchMovies = (query: string) => {
     navigate('/')
-    containerRef?.current?.scrollIntoView()
-    setCurrentPage(1)
+    containerRef.current?.scrollIntoView()
+    currentPage.current = 1
     setSearchParams(createSearchParams({ search: query }))
     getSearchResults(query)
   }
@@ -48,7 +48,11 @@ const App = () => {
 	const viewTrailer = (movie: IMovie) => {
 		getMovie(movie.id)
 		setOpen(true)
-	}
+  }
+
+  useEffect(() => {
+    initInfiniteScroll()
+  }, [initInfiniteScroll])
 
   return (
     <div className="App">
@@ -60,7 +64,7 @@ const App = () => {
         </Modal>
 
         <Routes>
-          <Route path="/" element={<Movies viewTrailer={viewTrailer} handleInfiniteScroll={handleInfiniteScroll} currentPage={currentPage}  />} />
+          <Route path="/" element={<Movies viewTrailer={viewTrailer}  />} />
           <Route path="/starred" element={<Starred viewTrailer={viewTrailer} />} />
           <Route path="/watch-later" element={<WatchLater viewTrailer={viewTrailer} />} />
           <Route path="*" element={<h1 className="not-found">Page Not Found</h1>} />

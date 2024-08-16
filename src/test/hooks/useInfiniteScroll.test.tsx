@@ -11,7 +11,7 @@ describe('useInfiniteScroll', () => {
   it('should initialize with page 1', () => {
     const { result } = renderHook(() => useInfiniteScroll(callback));
 
-    expect(result.current.currentPage).toBe(1);
+    expect(result.current.currentPage.current).toBe(1);
     expect(callback).not.toHaveBeenCalled();
   });
 
@@ -26,8 +26,21 @@ describe('useInfiniteScroll', () => {
       window.dispatchEvent(new Event('scroll'));
     });
 
-    expect(result.current.currentPage).toBe(2);
+    expect(result.current.currentPage.current).toBe(2);
     expect(callback).toHaveBeenCalledTimes(1);
+  });
+
+  it('should call callback with the correct query value when initInfiniteScroll is called', () => {
+    const query = 'test query';
+    renderHook(() => useInfiniteScroll(callback, query));
+    Object.defineProperty(window, 'innerHeight', { value: 800 });
+    document.documentElement.scrollTop = 1800;
+    Object.defineProperty(document.documentElement, 'scrollHeight', { value: 2600 });
+    act(() => {
+      window.dispatchEvent(new Event('scroll'));
+    });
+    expect(callback).toHaveBeenCalledTimes(1);
+    expect(callback).toHaveBeenCalledWith(query);
   });
 
   it('should not increment page or call callback if scroll position does not reach bottom', () => {
@@ -41,7 +54,7 @@ describe('useInfiniteScroll', () => {
       window.dispatchEvent(new Event('scroll'));
     });
 
-    expect(result.current.currentPage).toBe(1);
+    expect(result.current.currentPage.current).toBe(1);
     expect(callback).not.toHaveBeenCalled();
   });
 
@@ -55,4 +68,3 @@ describe('useInfiniteScroll', () => {
     expect(removeEventListenerSpy).toHaveBeenCalledWith('scroll', expect.any(Function));
   });
 });
-
