@@ -39,7 +39,7 @@ const Movies = ({ viewTrailer }: MoviesProps) => {
 						)
 					})}
 				</div>
-				{movies.movies.results?.length === 0 && <h4>No movies found</h4>}
+				{movies.fetchStatus === 'success' && movies.movies.results?.length === 0 ? <h4>No movies found</h4> : null}
 				{movies.fetchStatus === 'loading' && <Loader />}
 				{movies.fetchStatus === 'error' && <h4>Error fetching movies</h4>}
 			</>
