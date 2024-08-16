@@ -29,7 +29,8 @@ const Movies = ({ viewTrailer, handleInfiniteScroll, currentPage }: MoviesProps)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
-    return (
+	return (
+			<>
         <div data-testid="movies" className="movies">
 					{movies.movies.results?.map((movie, i) => {
 						return (
@@ -40,10 +41,11 @@ const Movies = ({ viewTrailer, handleInfiniteScroll, currentPage }: MoviesProps)
 							/>
 						)
 					})}
-					{movies.movies.results?.length === 0 && <h4>No movies found</h4>}
-					{movies.fetchStatus === 'loading' && <Loader />}
-					{movies.fetchStatus === 'error' && <h4>Error fetching movies</h4>}
-        </div>
+				</div>
+				{movies.movies.results?.length === 0 && <h4>No movies found</h4>}
+				{movies.fetchStatus === 'loading' && <Loader />}
+				{movies.fetchStatus === 'error' && <h4>Error fetching movies</h4>}
+			</>
     )
 }
 
