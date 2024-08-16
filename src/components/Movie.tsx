@@ -1,3 +1,4 @@
+import CloseButton from './CloseButton'
 import starredSlice from '../data/starredSlice'
 import watchLaterSlice from '../data/watchLaterSlice'
 import placeholder from '../assets/not-found-500X750.jpeg'
@@ -5,6 +6,7 @@ import { IMovie } from '../types/movie'
 import { useAppDispatch } from '../hooks/useAppDispatch'
 import { useAppSelector } from '../hooks/useAppSelector'
 import { ENDPOINT_MOVIE_POSTER } from '../constants'
+
 
 interface MovieProps {
     movie: IMovie
@@ -39,8 +41,8 @@ const Movie = ({ movie, viewTrailer }: MovieProps) => {
 		return watchLater.watchLaterMovies.some(m => m.id === movie.id);
 	};
 
-    const closeCard = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        e.stopPropagation()
+    const closeCard = (e?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        e?.stopPropagation()
         e?.currentTarget?.parentElement?.classList?.remove('opened')
     }
 
@@ -64,9 +66,7 @@ const Movie = ({ movie, viewTrailer }: MovieProps) => {
 				</div>
             <h6 className="title mobile-card">{movie.title}</h6>
             <h6 className="title">{movie.title}</h6>
-            <button type="button" className="close" onClick={(e) => closeCard(e)} aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
+						<CloseButton handleClick={closeCard}/>
         </div>
     </div>
     )

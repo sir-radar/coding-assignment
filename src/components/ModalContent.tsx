@@ -1,3 +1,5 @@
+import CloseButton from "./CloseButton"
+
 import "../styles/modal.scss"
 
 interface ModalContentProps {
@@ -10,9 +12,7 @@ export default function ModalContent({ children, closeModal }: ModalContentProps
     <div data-testid="modal-body" className="modal">
       <div className="overlay" onClick={() =>  closeModal()}></div>
       <div className="modal-content">
-        <button data-testid="modal-close-btn" type="button" className="close" onClick={() => closeModal()} aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+        <CloseButton handleClick={closeModal}/>
         {children}
       </div>
     </div>
