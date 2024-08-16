@@ -61,7 +61,7 @@ const App = () => {
 
       <div ref={containerRef} className="container">
         <Modal showContent={isOpen} closeModal={closeModal}>
-          <YoutubePlayer videoKey={videoKey!} loading={loading} error={error} />
+          <YoutubePlayer videoKey={videoKey || ''} loading={loading} error={error} />
         </Modal>
 
         <Routes>

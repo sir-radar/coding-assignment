@@ -12,7 +12,7 @@ interface ModalProps {
 
 export default function Modal({ children, showContent = false, closeModal }: ModalProps) {
   useEffect(() => {
-    const body = document.querySelector('body')!;
+    const body = document.querySelector('body') as HTMLBodyElement;
     body.style.overflow = showContent ? 'hidden' : 'auto';
   }, [showContent])
 

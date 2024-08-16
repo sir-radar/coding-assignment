@@ -11,7 +11,7 @@ export const useInfiniteScroll = (callback: CallbackType, query?: string | null)
 
     if (innerHeight + scrollTop + 1 >= scrollHeight) {
         currentPage.current += 1;
-        callback(query!);
+        callback(query || '');
     }
 	}, [query, callback]);
 
