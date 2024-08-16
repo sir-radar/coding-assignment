@@ -21,7 +21,7 @@ describe('Modal', () => {
   it('should call closeModal when the close button is clicked', async() => {
     const mockCloseModal = jest.fn();
     render(<Modal showContent={true} closeModal={mockCloseModal} children={<div>Modal Content</div>} />);
-    userEvent.click(screen.getByTestId('modal-close-btn'));
+    userEvent.click(screen.getByTestId('close-btn'));
     await waitFor(() => {
       expect(mockCloseModal).toHaveBeenCalled();
     })
