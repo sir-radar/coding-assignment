@@ -28,6 +28,7 @@ jest.mock('./hooks/useAppSelector', () => ({
 jest.mock('./hooks/useDebounce', () => ({
   useDebounce: jest.fn((fn) => fn),
 }));
+
 describe('App Component', () => {
   beforeEach(() => {
     require('./hooks/useGetMovies').useGetMovies.mockReturnValue(jest.fn());

@@ -26,16 +26,15 @@ const preloadedState: IRootState = {
 }
 
 export function renderWithProviders(
-  ui: React.ReactElement<any, string | React.JSXElementConstructor<any>>,
+  ui: React.ReactElement,
   {
-    preloadedState: IRootState = {},
     store = configureStore({
       reducer: {
         movies: moviesSlice.reducer,
         starred: starredSlice.reducer,
         watchLater: watchLaterSlice.reducer
       },
-      preloadedState: preloadedState
+    preloadedState
     }),
     ...renderOptions
   } = {}

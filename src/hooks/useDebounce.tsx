@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 
-export const useDebounce = (callback: Function, delay: number) => {
+export const useDebounce = (callback: (query: string) => void, delay: number) => {
   const timeoutRef = useRef<NodeJS.Timeout>()
 
   useEffect(() => {
@@ -11,13 +11,13 @@ export const useDebounce = (callback: Function, delay: number) => {
     }
   }, [])
 
-  const debouncedCallback = (...args: any[]) => {
+  const debouncedCallback = (query: string) => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current)
     }
 
     timeoutRef.current = setTimeout(() => {
-      callback(...args)
+      callback(query)
     }, delay)
   }
 

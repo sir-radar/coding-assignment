@@ -8,6 +8,16 @@ interface UseGetMovieResult {
   getMovie: (id: string) => Promise<void>
 }
 
+interface VideoData{
+  videos: {
+    results: {
+      key: string,
+      name: string,
+      type: string
+    }[]
+  }
+}
+
 export const useGetMovie = (): UseGetMovieResult => {
   const [videoKey, setVideoKey] = useState<string | undefined>(undefined)
   const [loading, setLoading] = useState<boolean>(false)
@@ -26,14 +36,16 @@ export const useGetMovie = (): UseGetMovieResult => {
         throw new Error(`Failed to fetch movie with id ${id}`)
       }
 
-      const videoData = await response.json()
+      const videoData: VideoData = await response.json()
 
       if (videoData.videos && videoData.videos.results.length) {
-        const trailer = videoData.videos.results.find((vid: any) => vid.type === 'Trailer')
+        const trailer = videoData.videos.results.find((vid) => vid.type === 'Trailer')
         setVideoKey(trailer ? trailer.key : videoData.videos.results[0].key)
       }
-    } catch (err: any) {
-      setError(err.message || 'Something went wrong')
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message || 'Something went wrong')
+      }
     } finally {
       setLoading(false)
     }
