@@ -30,7 +30,7 @@ const App = () => {
 
 
   const { currentPage, initInfiniteScroll } = useInfiniteScroll((query) => {
-    getMovies(query, currentPage.current, FetchType.DISCOVER)
+    getMovies(query, currentPage.current, FetchType.INFINITE)
 	}, searchQuery)
 
   const getSearchResults = useDebounce((query: string) => {

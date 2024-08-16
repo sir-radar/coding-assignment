@@ -7,7 +7,7 @@ import { FetchType } from '../types/movie';
 export const useGetMovies = (searchQuery: string | null) => {
   const dispatch = useAppDispatch();
 
-  const getMovies = useCallback((newQuery: string | null, page: number = 1, type:FetchType = FetchType.DISCOVER) => {
+  const getMovies = useCallback((newQuery: string | null, page: number = 1, type:FetchType = FetchType.SEARCH) => {
     const endpoint = searchQuery ? `${ENDPOINT_SEARCH}&query=${newQuery ? newQuery : searchQuery}&page=${page}` : `${ENDPOINT_DISCOVER}&page=${page}`;
     dispatch(fetchMovies({ apiUrl: endpoint, type }));
   }, [dispatch, searchQuery]);

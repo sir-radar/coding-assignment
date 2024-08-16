@@ -15,5 +15,5 @@ export interface MovieResponse {
 
 export enum FetchType {
 	SEARCH = 'search',
-	DISCOVER = 'discover',
+	INFINITE = 'infinite',
 }
