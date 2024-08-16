@@ -2,7 +2,7 @@ import { useEffect, useCallback, useRef } from 'react';
 
 type CallbackType = (query: string) => void
 
-export const useInfiniteScroll = (callback: CallbackType, query?: string | null) => {
+export const useInfiniteScroll = (callback: CallbackType,total_pages: number, query?: string | null) => {
   const currentPage = useRef<number>(1);
 
   const initInfiniteScroll = useCallback(() => {
@@ -10,8 +10,11 @@ export const useInfiniteScroll = (callback: CallbackType, query?: string | null)
 		const { scrollTop, scrollHeight } = document.documentElement;
 
     if (innerHeight + scrollTop + 1 >= scrollHeight) {
-        currentPage.current += 1;
+      currentPage.current += 1;
+      if (currentPage.current <= total_pages) {
         callback(query || '');
+      }
+
     }
 	}, [query, callback]);
 

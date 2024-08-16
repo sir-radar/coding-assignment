@@ -8,7 +8,8 @@ export interface IMovie {
 
 export interface MovieResponse {
 	movies: {
-			results: IMovie[]
+		results: IMovie[]
+		total_pages: number
 	}
 	fetchStatus: string;
 }

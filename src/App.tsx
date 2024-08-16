@@ -13,25 +13,29 @@ import { useGetMovie } from './hooks/useGetMovie'
 import { useDebounce } from './hooks/useDebounce'
 import { useInfiniteScroll } from './hooks/useInfiniteScroll'
 import { useModal } from './hooks/useModal'
+import { useAppSelector } from './hooks/useAppSelector'
 
 import './app.scss'
 
 
 
 
+
 const App = () => {
   const [searchParams, setSearchParams] = useSearchParams()
-  const navigate = useNavigate()
   const searchQuery = searchParams.get('search')
+  const navigate = useNavigate()
 	const getMovies = useGetMovies(searchQuery)
   const { videoKey, loading, error, getMovie } = useGetMovie();
   const { isOpen, openModal, closeModal } = useModal();
+  const state = useAppSelector((state) => state)
+	const { movies } = state
   const containerRef = useRef<HTMLDivElement>(null)
 
 
   const { currentPage, initInfiniteScroll } = useInfiniteScroll((query) => {
     getMovies(query, currentPage.current, FetchType.INFINITE)
-	}, searchQuery)
+	},movies.movies.total_pages, searchQuery )
 
   const getSearchResults = useDebounce((query: string) => {
     getMovies(query, 1, FetchType.SEARCH)
