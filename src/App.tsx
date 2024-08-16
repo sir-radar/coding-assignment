@@ -18,9 +18,6 @@ import { useAppSelector } from './hooks/useAppSelector'
 import './app.scss'
 
 
-
-
-
 const App = () => {
   const [searchParams, setSearchParams] = useSearchParams()
   const searchQuery = searchParams.get('search')
@@ -31,7 +28,6 @@ const App = () => {
   const state = useAppSelector((state) => state)
 	const { movies } = state
   const containerRef = useRef<HTMLDivElement>(null)
-
 
   const { currentPage, initInfiniteScroll } = useInfiniteScroll((query) => {
     getMovies(query, currentPage.current, FetchType.INFINITE)
