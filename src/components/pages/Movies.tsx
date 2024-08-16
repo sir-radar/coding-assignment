@@ -22,9 +22,11 @@ const Movies = ({ viewTrailer }: MoviesProps) => {
 	const getMovies = useGetMovies(searchQuery)
 
 	useEffect(() => {
-		getMovies(searchQuery)
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [])
+		// Run only on first render
+		if (movies.movies.results?.length === 0) {
+			getMovies(searchQuery)
+		}
+	}, [getMovies,searchQuery, movies.movies.results?.length])
 
 	return (
 			<>

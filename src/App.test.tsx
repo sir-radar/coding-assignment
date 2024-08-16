@@ -45,6 +45,7 @@ describe('App Component', () => {
     require('./hooks/useInfiniteScroll').useInfiniteScroll.mockReturnValue({
       currentPage: { current: 1 },
       initInfiniteScroll: jest.fn(),
+      resetInfiniteScroll: jest.fn(),
 		});
 
     require('./hooks/useModal').useModal.mockReturnValue({
@@ -120,6 +121,7 @@ describe('App Component', () => {
      require('./hooks/useInfiniteScroll').useInfiniteScroll.mockReturnValue({
       currentPage: { current: 1 },
       initInfiniteScroll: initScrollMock,
+      resetInfiniteScroll: jest.fn(),
 		});
     renderWithProviders(<App />)
     expect(initScrollMock).toHaveBeenCalledTimes(1);
