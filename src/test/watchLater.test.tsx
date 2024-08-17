@@ -1,36 +1,18 @@
 import { screen, fireEvent } from '@testing-library/react';
-import { renderWithProviders } from './utils';
+import { renderAppSelectMock, renderWithProviders } from './utils';
 import WatchLater from '../components/pages/WatchLater';
 import watchLaterSlice from '../data/watchLaterSlice'
 import { moviesMock } from './movies.mocks';
-import { IMovie } from '../types/movie'
 
 jest.mock('../hooks/useAppSelector', () => ({
   useAppSelector: jest.fn(),
 }));
 
-const renderAppSelectMock = (data:IMovie[] = []) => {
-  return require('../hooks/useAppSelector').useAppSelector.mockReturnValue({
-    movies: {
-      movies: {
-				total_pages: 1,
-				results: [],
-      	},
-      },
-      starred: {
-        starredMovies: [],
-			},
-			watchLater: {
-				watchLaterMovies: data
-			}
-  });
-}
-
 const viewTrailerMock = jest.fn()
 
 describe('WatchLater component', () => {
   it('shlould render with watchLater movies', () => {
-    renderAppSelectMock(moviesMock);
+    renderAppSelectMock([], [],moviesMock);
     renderWithProviders(<WatchLater viewTrailer={viewTrailerMock} />);
 
     const starredMovies = screen.getByTestId('watch-later-movies');
@@ -46,7 +28,7 @@ describe('WatchLater component', () => {
   });
 
   it('should call removeAllWatchLater action on button click', () => {
-		renderAppSelectMock(moviesMock);
+		renderAppSelectMock([], [],moviesMock);
 		const removeAllWatchLater = jest.spyOn(watchLaterSlice.actions, 'removeAllWatchLater');
 
     renderWithProviders(<WatchLater viewTrailer={() => {}} />)

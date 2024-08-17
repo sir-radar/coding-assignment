@@ -100,7 +100,7 @@ describe('Movie component', () => {
 
     expect(viewTrailer).toHaveBeenCalledTimes(1);
     waitFor(() => {
-      expect(screen.getByTestId('modal-body')).toBeInTheDocument;
+      expect(screen.getByTestId('modal-body')).toBeInTheDocument();
     })
   });
 });
