@@ -51,9 +51,9 @@ const Movie = ({ movie, viewTrailer }: MovieProps) => {
   }
 
     return (
-        <div className="wrapper col-3 col-sm-4 col-md-3 col-lg-3 col-xl-2">
-        <div className="card" onClick={(e) => e.currentTarget.classList.add('opened')} >
-            <div className="card-body text-center">
+    <div className="wrapper col-3 col-sm-4 col-md-3 col-lg-3 col-xl-2">
+      <div className="card" data-testid="movie-card" onClick={(e) => e.currentTarget.classList.add('opened')} >
+        <div className="card-body text-center">
 					<div className="overlay" />
 					<div className="info_panel">
 						<div className="overview">{movie.overview}</div>
@@ -68,9 +68,9 @@ const Movie = ({ movie, viewTrailer }: MovieProps) => {
 					</div>
 					<img loading="lazy" className="center-block" src={(movie.poster_path) ? `${ENDPOINT_MOVIE_POSTER}/${movie.poster_path}` : placeholder} alt="Movie poster" />
 				</div>
-            <h6 className="title mobile-card">{movie.title}</h6>
-            <h6 className="title">{movie.title}</h6>
-						<CloseButton handleClick={closeCard}/>
+					<h6 className="title mobile-card">{movie.title}</h6>
+					<h6 className="title">{movie.title}</h6>
+					<CloseButton handleClick={closeCard}/>
         </div>
     </div>
     )
