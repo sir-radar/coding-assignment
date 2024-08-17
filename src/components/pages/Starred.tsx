@@ -46,7 +46,7 @@ const Starred = ({ viewTrailer }: StarredProps) => {
       )}
 
       {starred.starredMovies.length === 0 && (
-        <div className="text-center empty-cart">
+        <div data-testid="empty-strarred-message" className="text-center empty-cart">
           <i className="bi bi-star" />
           <p>There are no starred movies.</p>
           <p>
