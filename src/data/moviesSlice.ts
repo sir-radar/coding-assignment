@@ -31,6 +31,11 @@ const moviesSlice = createSlice({
           state.fetchStatus = 'success'
           return
         }
+        // When on the first request page in infinite scroll mode, reset existing movie list to empty array
+        if(action.payload.response.page === 1){
+          state.movies.results = []
+        }
+        // When on the next request page in infinite scroll mode, prepend new movies
         const results: IMovie[] = action.payload.response?.results || []
         state.movies = { results: [...state.movies.results, ...results], total_pages: action.payload.response?.total_pages }
         state.fetchStatus = 'success'
