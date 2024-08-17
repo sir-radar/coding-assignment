@@ -9,8 +9,11 @@ import starredSlice from '../data/starredSlice'
 import watchLaterSlice from '../data/watchLaterSlice'
 import { IRootState } from '../data/store'
 import { IMovie } from '../types/movie'
-import { useAppSelector } from '../hooks/useAppSelector';
-import { useAppDispatch } from '../hooks/useAppDispatch';
+import { useAppSelector } from '../hooks/useAppSelector'
+import { useAppDispatch } from '../hooks/useAppDispatch'
+import { useGetMovie } from '../hooks/useGetMovie'
+import { useInfiniteScroll } from '../hooks/useInfiniteScroll'
+import { useModal } from '../hooks/useModal'
 
 const preloadedState: IRootState = {
   movies: {
@@ -37,7 +40,7 @@ export function renderWithProviders(
         starred: starredSlice.reducer,
         watchLater: watchLaterSlice.reducer
       },
-    preloadedState
+      preloadedState
     }),
     ...renderOptions
   } = {}
@@ -65,19 +68,44 @@ export const renderAppSelectMock = (
     movies: {
       movies: {
         total_pages: 1,
-        results: moviesData,
+        results: moviesData
       },
       fetchStatus
     },
     starred: {
-      starredMovies: starredData,
+      starredMovies: starredData
     },
     watchLater: {
-      watchLaterMovies: watchLaterData,
-    },
-  });
-};
+      watchLaterMovies: watchLaterData
+    }
+  })
+}
 
 export const renderAppDispatchMock = () => {
-  return (useAppDispatch as jest.Mock).mockReturnValue(jest.fn());
+  return (useAppDispatch as jest.Mock).mockReturnValue(jest.fn())
+}
+
+export const useGetMovieMock = (getMovieFn = jest.fn()) => {
+  return (useGetMovie as jest.Mock).mockReturnValue({
+    videoKey: '',
+    loading: false,
+    error: null,
+    getMovie: getMovieFn
+  })
+}
+
+export const useInfiniteScrollMock = (mockFn = jest.fn()) => {
+  return (useInfiniteScroll as jest.Mock).mockReturnValue({
+    currentPage: { current: 1 },
+    initInfiniteScroll: mockFn,
+    resetInfiniteScroll: jest.fn()
+  })
+}
+
+export const useModalMock = (isOpen = false, openModalMockFn = jest.fn(), closeModalMockFn = jest.fn()) => {
+  return (useModal as jest.Mock).mockReturnValue({
+    isOpen,
+    openModal: openModalMockFn,
+    closeModal: closeModalMockFn
+  })
 }

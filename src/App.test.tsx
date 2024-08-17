@@ -1,8 +1,10 @@
 import { screen, fireEvent, waitFor } from '@testing-library/react';
 import App from './App';
-import { renderWithProviders } from './test/utils';
+import { renderAppSelectMock, renderWithProviders, useGetMovieMock, useInfiniteScrollMock, useModalMock } from './test/utils';
 import { moviesMock } from './test/movies.mocks';
 import userEvent from '@testing-library/user-event';
+import { useGetMovies } from './hooks/useGetMovies';
+import { useDebounce } from './hooks/useDebounce';
 
 // Mock the custom hooks
 jest.mock('./hooks/useGetMovies', () => ({
@@ -31,43 +33,17 @@ jest.mock('./hooks/useDebounce', () => ({
 
 describe('App Component', () => {
   beforeEach(() => {
-    require('./hooks/useGetMovies').useGetMovies.mockReturnValue(jest.fn());
+    (useGetMovies as jest.Mock).mockReturnValue(jest.fn())
 
-		require('./hooks/useDebounce').useDebounce.mockReturnValue(jest.fn());
+		(useDebounce as jest.Mock).mockReturnValue(jest.fn());
 
-    require('./hooks/useGetMovie').useGetMovie.mockReturnValue({
-      videoKey: '',
-      loading: false,
-      error: null,
-      getMovie: jest.fn(),
-		});
+    useGetMovieMock()
 
-    require('./hooks/useInfiniteScroll').useInfiniteScroll.mockReturnValue({
-      currentPage: { current: 1 },
-      initInfiniteScroll: jest.fn(),
-      resetInfiniteScroll: jest.fn(),
-		});
+    useInfiniteScrollMock()
 
-    require('./hooks/useModal').useModal.mockReturnValue({
-      isOpen: false,
-      openModal: jest.fn(),
-      closeModal: jest.fn(),
-		});
+    useModalMock()
 
-    require('./hooks/useAppSelector').useAppSelector.mockReturnValue({
-      movies: {
-        movies: {
-          total_pages: 1,
-          results: [],
-        },
-      },
-      starred: {
-        starredMovies: []
-			},
-			watchLater: {
-				watchLaterMovies: []
-			}
-    });
+    renderAppSelectMock()
   });
 
   it('renders the app component correctly', async () => {
@@ -118,20 +94,14 @@ describe('App Component', () => {
 
   it('initInfiniteScroll function is called on mount', () => {
     const initScrollMock = jest.fn()
-     require('./hooks/useInfiniteScroll').useInfiniteScroll.mockReturnValue({
-      currentPage: { current: 1 },
-      initInfiniteScroll: initScrollMock,
-      resetInfiniteScroll: jest.fn(),
-		});
+    useInfiniteScrollMock(initScrollMock)
     renderWithProviders(<App />)
     expect(initScrollMock).toHaveBeenCalledTimes(1);
   });
 
   it('search for movies', async () => {
-    const getMoviesMock = jest.fn()
-    const useDebounceMock = jest.fn()
-    require('./hooks/useGetMovies').useGetMovies.mockReturnValue(getMoviesMock);
-    require('./hooks/useDebounce').useDebounce.mockReturnValue(useDebounceMock);
+    const getMoviesMock = (useGetMovies as jest.Mock).mockReturnValue(jest.fn());
+    const useDebounceMock = (useDebounce as jest.Mock).mockReturnValue(jest.fn());
 
     renderWithProviders(<App />)
     await userEvent.type(screen.getByTestId('search-movies'), 'forrest gump')
@@ -142,34 +112,12 @@ describe('App Component', () => {
   })
 
   it('opens the trailer modal when a trailer is viewed', async () => {
-    require('./hooks/useAppSelector').useAppSelector.mockReturnValue({
-      movies: {
-        movies: {
-          total_pages: 1,
-          results: moviesMock,
-        },
-      },
-      starred: {
-        starredMovies: []
-			},
-			watchLater: {
-				watchLaterMovies: []
-			}
-    });
+    renderAppSelectMock(moviesMock)
 		const mockGetMovie = jest.fn();
-		const mockOpenModal = jest.fn();
-    require('./hooks/useGetMovie').useGetMovie.mockReturnValue({
-      videoKey: 'sample-key',
-      loading: false,
-      error: null,
-      getMovie: mockGetMovie,
-		});
+    const mockOpenModal = jest.fn();
+    useGetMovieMock(mockGetMovie)
 
-    require('./hooks/useModal').useModal.mockReturnValue({
-      isOpen: false,
-      openModal: mockOpenModal,
-      closeModal: jest.fn(),
-    });
+    useModalMock(false,mockOpenModal, jest.fn())
 
     renderWithProviders(<App />);
 
@@ -181,27 +129,12 @@ describe('App Component', () => {
     });
   });
 
-  it('should close the modal when close is clicked', async () => {
-    require('./hooks/useAppSelector').useAppSelector.mockReturnValue({
-      movies: {
-        movies: {
-          total_pages: 1,
-          results: moviesMock,
-        },
-      },
-      starred: {
-        starredMovies: []
-			},
-			watchLater: {
-				watchLaterMovies: []
-			}
-    });
+  it('should close the modal when close button is clicked', async () => {
+    renderAppSelectMock(moviesMock)
+
     const mockCloseModal = jest.fn();
-    require('./hooks/useModal').useModal.mockReturnValue({
-      isOpen: true,
-      openModal: jest.fn(),
-      closeModal: mockCloseModal,
-    });
+
+    useModalMock(true,jest.fn(), mockCloseModal)
 
     renderWithProviders(<App />);
     fireEvent.click(screen.getAllByTestId('close-btn')[2]);
