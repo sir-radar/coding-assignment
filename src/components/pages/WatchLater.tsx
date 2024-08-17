@@ -48,7 +48,7 @@ const WatchLater = ({ viewTrailer }: WatchLaterProps) => {
       )}
 
       {watchLater.watchLaterMovies.length === 0 && (
-        <div className="text-center empty-cart">
+        <div data-testid="empty-watch-later-message" className="text-center empty-cart">
           <i className="bi bi-heart" />
           <p>You have no movies saved to watch later.</p>
           <p>

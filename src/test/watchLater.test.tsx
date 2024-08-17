@@ -1,25 +1,58 @@
-import { screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import { renderWithProviders } from './utils'
-import App from '../App'
+import { screen, fireEvent } from '@testing-library/react';
+import { renderWithProviders } from './utils';
+import WatchLater from '../components/pages/WatchLater';
+import watchLaterSlice from '../data/watchLaterSlice'
+import { moviesMock } from './movies.mocks';
+import { IMovie } from '../types/movie'
 
-it('Watch Later movies page', async () => {
-  renderWithProviders(<App />)
+jest.mock('../hooks/useAppSelector', () => ({
+  useAppSelector: jest.fn(),
+}));
 
-  await userEvent.type(screen.getByTestId('search-movies'), 'forrest gump')
+const renderAppSelectMock = (data:IMovie[] = []) => {
+  return require('../hooks/useAppSelector').useAppSelector.mockReturnValue({
+    movies: {
+      movies: {
+				total_pages: 1,
+				results: [],
+      	},
+      },
+      starred: {
+        starredMovies: [],
+			},
+			watchLater: {
+				watchLaterMovies: data
+			}
+  });
+}
 
-  const movieTitle = await screen.findAllByText('Through the Eyes of Forrest Gump')
-  expect(movieTitle[0]).toBeInTheDocument()
+const viewTrailerMock = jest.fn()
 
-  const watchLaterLink = screen.getAllByTestId('watch-later')[0]
-  await waitFor(() => {
-    expect(watchLaterLink).toBeInTheDocument()
-  })
-  await userEvent.click(watchLaterLink)
+describe('WatchLater component', () => {
+  it('shlould render with watchLater movies', () => {
+    renderAppSelectMock(moviesMock);
+    renderWithProviders(<WatchLater viewTrailer={viewTrailerMock} />);
 
-  // const watchLaterink = screen.getByTestId('watch-later-div')
-  // await waitFor(() => {
-  //     expect(watchLaterink).toBeInTheDocument()
-  // })
-  // await userEvent.click(watchLaterink)
-})
+    const starredMovies = screen.getByTestId('watch-later-movies');
+    expect(starredMovies).toBeInTheDocument();
+  });
+
+	it('should render with no watchLater movies', () => {
+		renderAppSelectMock([]);
+    renderWithProviders(<WatchLater viewTrailer={viewTrailerMock} />);
+
+    const emptyMessage = screen.getByTestId('empty-watch-later-message');
+    expect(emptyMessage).toBeInTheDocument();
+  });
+
+  it('should call removeAllWatchLater action on button click', () => {
+		renderAppSelectMock(moviesMock);
+		const removeAllWatchLater = jest.spyOn(watchLaterSlice.actions, 'removeAllWatchLater');
+
+    renderWithProviders(<WatchLater viewTrailer={() => {}} />)
+
+    const button = screen.getByText('Empty list');
+    fireEvent.click(button);
+    expect(removeAllWatchLater).toHaveBeenCalledTimes(1);
+  });
+});
