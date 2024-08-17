@@ -8,11 +8,11 @@ interface UseGetMovieResult {
   getMovie: (id: string) => Promise<void>
 }
 
-interface VideoData{
+interface VideoData {
   videos: {
     results: {
-      key: string,
-      name: string,
+      key: string
+      name: string
       type: string
     }[]
   }

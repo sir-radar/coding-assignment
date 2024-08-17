@@ -18,12 +18,14 @@ export const useInfiniteScroll = (callback: CallbackType, total_pages: number, q
   }, [query, total_pages, callback])
 
   const resetInfiniteScroll = useCallback(() => {
-    window.removeEventListener('scroll', initInfiniteScroll);
-  }, [initInfiniteScroll]);
+    window.removeEventListener('scroll', initInfiniteScroll)
+  }, [initInfiniteScroll])
 
   useEffect(() => {
     window.addEventListener('scroll', initInfiniteScroll)
-    return () => {resetInfiniteScroll()}
+    return () => {
+      resetInfiniteScroll()
+    }
   }, [query, initInfiniteScroll, resetInfiniteScroll])
 
   return { currentPage, initInfiniteScroll, resetInfiniteScroll }
