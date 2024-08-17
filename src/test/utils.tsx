@@ -58,7 +58,8 @@ export function renderWithProviders(
 export const renderAppSelectMock = (
   moviesData: IMovie[] = [],
   starredData: IMovie[] = [],
-  watchLaterData: IMovie[] = []
+  watchLaterData: IMovie[] = [],
+  fetchStatus: string = ''
 ) => {
   return (useAppSelector as jest.Mock).mockReturnValue({
     movies: {
@@ -66,6 +67,7 @@ export const renderAppSelectMock = (
         total_pages: 1,
         results: moviesData,
       },
+      fetchStatus
     },
     starred: {
       starredMovies: starredData,
