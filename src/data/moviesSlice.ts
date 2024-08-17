@@ -1,17 +1,24 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { FetchType, IMovie, MovieResponse } from '../types/movie'
+import { FetchType, IMovie, MovieSlice } from '../types/movie'
 
 interface FetchMovieParams {
   apiUrl: string
   type: FetchType
 }
 
+interface Response {
+  page: number;
+  results: IMovie[];
+  total_pages: number;
+  total_results: number;
+}
+
 export const fetchMovies = createAsyncThunk('fetch-movies', async ({ apiUrl, type }: FetchMovieParams) => {
   const response = await fetch(apiUrl)
-  return { response: await response.json(), type }
+  return { response: await response.json() as Response, type }
 })
 
-const initialState: MovieResponse = {
+const initialState: MovieSlice = {
   movies: {
     results: [],
     total_pages: 0
@@ -32,7 +39,7 @@ const moviesSlice = createSlice({
           return
         }
         // When on the first request page in infinite scroll mode, reset existing movie list to empty array
-        if(action.payload.response.page === 1){
+        if(action.payload.response?.page === 1){
           state.movies.results = []
         }
         // When on the next request page in infinite scroll mode, prepend new movies

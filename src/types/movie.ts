@@ -6,7 +6,7 @@ export interface IMovie {
   title: string
 }
 
-export interface MovieResponse {
+export interface MovieSlice {
   movies: {
     results: IMovie[]
     total_pages: number
