@@ -2,24 +2,23 @@ import { useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useAppSelector } from '../../hooks/useAppSelector'
 import { useGetMovies } from '../../hooks/useGetMovies'
+import { useTrailerContext } from '../../hooks/useTrailerContext'
 
 import { Movie, Loader } from '../ui'
 
-import { IMovie } from '../../types/movie'
 
 import '../../styles/movies.scss'
 
 
-interface MoviesProps {
-	viewTrailer: (movie: IMovie) => void,
-}
 
-const Movies = ({ viewTrailer }: MoviesProps) => {
+
+const Movies = () => {
 	const state = useAppSelector((state) => state)
 	const { movies } = state
 	const [searchParams] = useSearchParams()
 	const searchQuery = searchParams.get('search')
 	const getMovies = useGetMovies(searchQuery)
+	const { viewTrailer } = useTrailerContext()
 
 	useEffect(() => {
 		// Run only on first render

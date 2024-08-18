@@ -2,21 +2,18 @@ import { Link } from 'react-router-dom'
 
 import { useAppSelector } from '../../hooks/useAppSelector'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
+import { useTrailerContext } from '../../hooks/useTrailerContext'
 
 import { Movie } from '../ui'
 
 import starredSlice from '../../data/starredSlice'
 
-import { IMovie } from '../../types/movie'
-
 import '../../styles/starred.scss'
 
-interface StarredProps {
-  viewTrailer: (movie: IMovie) => void
-}
-
-const Starred = ({ viewTrailer }: StarredProps) => {
+const Starred = () => {
   const { starred } = useAppSelector((state) => state);
+  const { viewTrailer } = useTrailerContext()
+
   const dispatch = useAppDispatch();
 
   const handleClearAllStarred = () => {

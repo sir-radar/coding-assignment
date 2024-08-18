@@ -2,23 +2,21 @@ import { Link } from 'react-router-dom'
 
 import { useAppSelector } from '../../hooks/useAppSelector'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
+import { useTrailerContext } from '../../hooks/useTrailerContext'
 
 import { Movie } from '../ui'
 
 import watchLaterSlice from '../../data/watchLaterSlice'
 
-import { IMovie} from '../../types/movie'
 
 import '../../styles/starred.scss'
 
 
-interface WatchLaterProps {
-  viewTrailer: (movie: IMovie) => void;
-}
 
-const WatchLater = ({ viewTrailer }: WatchLaterProps) => {
+const WatchLater = () => {
   const { watchLater } = useAppSelector((state) => state);
   const { removeAllWatchLater } = watchLaterSlice.actions;
+  const { viewTrailer } = useTrailerContext()
   const dispatch = useAppDispatch();
 
   return (
