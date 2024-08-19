@@ -14,6 +14,7 @@ import { useAppDispatch } from '../hooks/useAppDispatch'
 import { useGetMovie } from '../hooks/useGetMovie'
 import { useInfiniteScroll } from '../hooks/useInfiniteScroll'
 import { useModal } from '../hooks/useModal'
+import { TrailerContext } from '../context/TrailerContext'
 
 const preloadedState: IRootState = {
   movies: {
@@ -31,6 +32,15 @@ const preloadedState: IRootState = {
   }
 }
 
+const mockReturns = {
+  videoKey: '',
+  loading: false,
+  error: '',
+  isOpen: false,
+  viewTrailer: jest.fn(),
+  closeModal: jest.fn()
+}
+
 export function renderWithProviders(
   ui: React.ReactElement,
   {
@@ -43,14 +53,17 @@ export function renderWithProviders(
       preloadedState
     }),
     ...renderOptions
-  } = {}
+  } = {},
+  trailerproviderData = mockReturns
 ) {
   setupListeners(store.dispatch)
 
   function Wrapper({ children }: { children: React.ReactNode }) {
     return (
       <Provider store={store}>
-        <MemoryRouter initialEntries={['/']}>{children}</MemoryRouter>
+        <TrailerContext.Provider value={trailerproviderData}>
+          <MemoryRouter initialEntries={['/']}>{children}</MemoryRouter>
+        </TrailerContext.Provider>
       </Provider>
     )
   }

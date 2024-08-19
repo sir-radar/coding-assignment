@@ -92,13 +92,6 @@ describe('App Component', () => {
     });
   });
 
-  it('initInfiniteScroll function is called on mount', () => {
-    const initScrollMock = jest.fn()
-    useInfiniteScrollMock(initScrollMock)
-    renderWithProviders(<App />)
-    expect(initScrollMock).toHaveBeenCalledTimes(1);
-  });
-
   it('search for movies', async () => {
     const getMoviesMock = (useGetMovies as jest.Mock).mockReturnValue(jest.fn());
     const useDebounceMock = (useDebounce as jest.Mock).mockReturnValue(jest.fn());
@@ -113,19 +106,23 @@ describe('App Component', () => {
 
   it('opens the trailer modal when a trailer is viewed', async () => {
     renderAppSelectMock(moviesMock)
-		const mockGetMovie = jest.fn();
-    const mockOpenModal = jest.fn();
-    useGetMovieMock(mockGetMovie)
+		const viewTrailerMock = jest.fn();
 
-    useModalMock(false,mockOpenModal, jest.fn())
+    const mockReturns = {
+      videoKey: '',
+      loading: false,
+      error: '',
+      isOpen: true,
+      viewTrailer: viewTrailerMock,
+      closeModal: jest.fn()
+    };
 
-    renderWithProviders(<App />);
+    renderWithProviders(<App />, {}, mockReturns);
 
     fireEvent.click(screen.getAllByText('View Trailer')[0]);
 
     await waitFor(() => {
-			expect(mockGetMovie).toHaveBeenCalled();
-			expect(mockOpenModal).toHaveBeenCalled();
+			expect(viewTrailerMock).toHaveBeenCalled();
     });
   });
 
@@ -134,9 +131,16 @@ describe('App Component', () => {
 
     const mockCloseModal = jest.fn();
 
-    useModalMock(true,jest.fn(), mockCloseModal)
+    const mockReturns = {
+      videoKey: '',
+      loading: false,
+      error: '',
+      isOpen: true,
+      viewTrailer: jest.fn(),
+      closeModal: mockCloseModal
+    };
 
-    renderWithProviders(<App />);
+    renderWithProviders(<App />, {}, mockReturns);
     fireEvent.click(screen.getAllByTestId('close-btn')[2]);
 
     await waitFor(() => {

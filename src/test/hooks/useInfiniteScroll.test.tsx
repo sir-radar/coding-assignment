@@ -1,90 +1,106 @@
 import { renderHook, act } from '@testing-library/react';
 import { useInfiniteScroll } from '../../hooks/useInfiniteScroll';
 
+
 describe('useInfiniteScroll', () => {
-  const callback = jest.fn();
+  let observeMock: jest.Mock;
+  let disconnectMock: jest.Mock;
+  let intersectionObserverMock: jest.Mock;
 
   beforeEach(() => {
-    callback.mockClear();
+    observeMock = jest.fn();
+    disconnectMock = jest.fn();
+
+    intersectionObserverMock = jest.fn().mockImplementation((callback) => ({
+      observe: observeMock,
+      disconnect: disconnectMock,
+      takeRecords: jest.fn(),
+      root: null,
+      rootMargin: '',
+      thresholds: [],
+      callback,
+    }));
+
+    // Mock the IntersectionObserver
+    window.IntersectionObserver = intersectionObserverMock;
   });
 
-  it('should initialize with page 1', () => {
-    const total_pages = 10
-    const { result } = renderHook(() => useInfiniteScroll(callback, total_pages));
-
-    expect(result.current.currentPage.current).toBe(1);
-    expect(callback).not.toHaveBeenCalled();
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
-  it('should increment page number and call callback on scroll', () => {
-    const total_pages = 10
-    const { result } = renderHook(() => useInfiniteScroll(callback,total_pages));
+  it('should return a function that can be used as a ref', () => {
+    const { result } = renderHook(() => useInfiniteScroll(() => {}));
+    expect(typeof result.current).toBe('function');
+  });
 
-    Object.defineProperty(window, 'innerHeight', { value: 800 });
-    document.documentElement.scrollTop = 1800;
-    Object.defineProperty(document.documentElement, 'scrollHeight', { value: 2600 });
+  it('should call the callback when the observed node is intersecting', () => {
+    const callback = jest.fn();
+    const { result } = renderHook(() => useInfiniteScroll(callback));
+
+    const node = document.createElement('div');
 
     act(() => {
-      window.dispatchEvent(new Event('scroll'));
+      result.current(node);
     });
 
-    expect(result.current.currentPage.current).toBe(2);
+    // Simulate an intersection
+    const mockEntries = [{ isIntersecting: true }];
+    act(() => {
+      intersectionObserverMock.mock.calls[0][0](mockEntries);
+    });
+
     expect(callback).toHaveBeenCalledTimes(1);
   });
 
-   it('should not call callback on scroll when total_pages has been reached', () => {
-    const total_pages = 1
-    renderHook(() => useInfiniteScroll(callback,total_pages));
+  it('should not call the callback when the observed node is not intersecting', () => {
+    const callback = jest.fn();
+    const { result } = renderHook(() => useInfiniteScroll(callback));
 
-    Object.defineProperty(window, 'innerHeight', { value: 800 });
-    document.documentElement.scrollTop = 1800;
-    Object.defineProperty(document.documentElement, 'scrollHeight', { value: 2600 });
+    const node = document.createElement('div');
 
     act(() => {
-      window.dispatchEvent(new Event('scroll'));
+      result.current(node);
     });
 
-    expect(callback).toHaveBeenCalledTimes(0);
-  });
-
-  it('should call callback with the correct query value when initInfiniteScroll is called', () => {
-    const total_pages = 10
-    const query = 'test query';
-    renderHook(() => useInfiniteScroll(callback, total_pages, query));
-    Object.defineProperty(window, 'innerHeight', { value: 800 });
-    document.documentElement.scrollTop = 1800;
-    Object.defineProperty(document.documentElement, 'scrollHeight', { value: 2600 });
+    // Simulate no intersection
+    const mockEntries = [{ isIntersecting: false }];
     act(() => {
-      window.dispatchEvent(new Event('scroll'));
-    });
-    expect(callback).toHaveBeenCalledTimes(1);
-    expect(callback).toHaveBeenCalledWith(query);
-  });
-
-  it('should not increment page or call callback if scroll position does not reach bottom', () => {
-    const total_pages = 10
-		const { result } = renderHook(() => useInfiniteScroll(callback, total_pages));
-
-    Object.defineProperty(window, 'innerHeight', { value: 800 });
-    document.documentElement.scrollTop = 1000;
-    Object.defineProperty(document.documentElement, 'scrollHeight', { value: 2600 });
-
-    act(() => {
-      window.dispatchEvent(new Event('scroll'));
+      intersectionObserverMock.mock.calls[0][0](mockEntries);
     });
 
-    expect(result.current.currentPage.current).toBe(1);
     expect(callback).not.toHaveBeenCalled();
   });
 
-  it('should remove the scroll event listener on unmount', () => {
-    const total_pages = 10
-    const removeEventListenerSpy = jest.spyOn(window, 'removeEventListener');
+  it('should disconnect the observer when the component is unmounted', () => {
+    const { result, unmount } = renderHook(() => useInfiniteScroll(() => {}));
 
-    const { unmount } = renderHook(() => useInfiniteScroll(callback, total_pages));
+    const node = document.createElement('div');
+
+    act(() => {
+      result.current(node);
+    });
 
     unmount();
 
-    expect(removeEventListenerSpy).toHaveBeenCalledWith('scroll', expect.any(Function));
+    expect(disconnectMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('should handle multiple renders without throwing an error', () => {
+    const { result, rerender } = renderHook(() => useInfiniteScroll(() => {}));
+
+    const node = document.createElement('div');
+
+    act(() => {
+      result.current(node);
+    });
+
+    rerender();
+
+    act(() => {
+      result.current(node);
+    });
+
+    expect(() => rerender()).not.toThrow();
   });
 });

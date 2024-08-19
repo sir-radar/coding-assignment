@@ -8,12 +8,10 @@ jest.mock('../hooks/useAppSelector', () => ({
   useAppSelector: jest.fn()
 }))
 
-const viewTrailerMock = jest.fn()
-
 describe('WatchLater component', () => {
   it('shlould render with watchLater movies', () => {
     renderAppSelectMock([], [], moviesMock)
-    renderWithProviders(<WatchLater viewTrailer={viewTrailerMock} />)
+    renderWithProviders(<WatchLater />)
 
     const starredMovies = screen.getByTestId('watch-later-movies')
     expect(starredMovies).toBeInTheDocument()
@@ -21,7 +19,7 @@ describe('WatchLater component', () => {
 
   it('should render with no watchLater movies', () => {
     renderAppSelectMock([])
-    renderWithProviders(<WatchLater viewTrailer={viewTrailerMock} />)
+    renderWithProviders(<WatchLater />)
 
     const emptyMessage = screen.getByTestId('empty-watch-later-message')
     expect(emptyMessage).toBeInTheDocument()
@@ -31,7 +29,7 @@ describe('WatchLater component', () => {
     renderAppSelectMock([], [], moviesMock)
     const removeAllWatchLater = jest.spyOn(watchLaterSlice.actions, 'removeAllWatchLater')
 
-    renderWithProviders(<WatchLater viewTrailer={() => {}} />)
+    renderWithProviders(<WatchLater />)
 
     const button = screen.getByText('Empty list')
     fireEvent.click(button)

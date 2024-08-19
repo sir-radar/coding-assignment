@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom'
 import { useAppSelector } from '../../hooks/useAppSelector'
 import { useGetMovies } from '../../hooks/useGetMovies'
 import { useTrailerContext } from '../../hooks/useTrailerContext'
-import useInfiniteScroll from '../../hooks/useInfiniteScroll'
+import { useInfiniteScroll } from '../../hooks/useInfiniteScroll'
 
 import { Movie, Loader } from '../ui'
 

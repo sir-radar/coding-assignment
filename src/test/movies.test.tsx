@@ -1,8 +1,11 @@
-import { waitFor, screen } from '@testing-library/react'
+import { waitFor, screen, fireEvent } from '@testing-library/react'
 import Movies from '../components/pages/Movies'
 import { renderAppSelectMock, renderWithProviders } from './utils'
 import { moviesMock } from './movies.mocks'
 import { useGetMovies } from '../hooks/useGetMovies'
+import { useAppSelector } from '../hooks/useAppSelector'
+import { useTrailerContext } from '../hooks/useTrailerContext'
+import { useInfiniteScroll } from '../hooks/useInfiniteScroll'
 
 jest.mock('../hooks/useAppSelector', () => ({
   useAppSelector: jest.fn()
@@ -12,41 +15,70 @@ jest.mock('../hooks/useGetMovies', () => ({
   useGetMovies: jest.fn()
 }))
 
+jest.mock('../hooks/useGetMovies')
+jest.mock('../hooks/useAppSelector')
+jest.mock('../hooks/useTrailerContext')
+jest.mock('../hooks/useInfiniteScroll')
+
 describe('Movies component', () => {
-  const viewTrailer = jest.fn()
-  let useGetMoviesMock: jest.SpyInstance
+  let useGetMoviesMock: jest.Mock
+  let useAppSelectorMock: jest.Mock
+  let useTrailerContextMock: jest.Mock
+  let useInfiniteScrollMock: jest.Mock
 
   beforeEach(() => {
     renderAppSelectMock()
+
     useGetMoviesMock = (useGetMovies as jest.Mock).mockReturnValue(() => jest.fn())
+    useTrailerContextMock = (useTrailerContext as jest.Mock).mockReturnValue({
+      videoKey: '',
+      loading: false,
+      error: '',
+      isOpen: true,
+      viewTrailer: jest.fn(),
+      closeModal: jest.fn()
+    })
+
+    useGetMoviesMock = useGetMovies as jest.Mock
+    useAppSelectorMock = useAppSelector as jest.Mock
+    useInfiniteScrollMock = useInfiniteScroll as jest.Mock
   })
 
-  it('should render no movies', () => {
-    renderWithProviders(<Movies viewTrailer={viewTrailer} />)
-    expect(screen.getByTestId('movies')).toBeInTheDocument()
-    expect(screen.getByTestId('movies')).toBeEmptyDOMElement()
+  it('should render with no movies', () => {
+    renderAppSelectMock([])
+
+    const { getByTestId } = renderWithProviders(<Movies />)
+    expect(getByTestId('movies')).toBeEmptyDOMElement()
   })
 
-  it('should render movies', () => {
+  it('should render with movies', () => {
     renderAppSelectMock(moviesMock)
-    renderWithProviders(<Movies viewTrailer={viewTrailer} />)
-    expect(screen.getAllByTestId('movie-card')).toHaveLength(2)
+    const { getAllByTestId } = renderWithProviders(<Movies />)
+    expect(getAllByTestId('movie-card')).toHaveLength(2)
   })
 
-  it('should render loading state', () => {
+  it('should render with loading state', () => {
     renderAppSelectMock([], [], [], 'loading')
-    renderWithProviders(<Movies viewTrailer={viewTrailer} />)
+    renderWithProviders(<Movies />)
     expect(screen.getByTestId('loader')).toBeInTheDocument()
   })
 
-  it('should render error state', () => {
+  it('should render with error state', () => {
     renderAppSelectMock([], [], [], 'error')
-    renderWithProviders(<Movies viewTrailer={viewTrailer} />)
+    renderWithProviders(<Movies />)
     expect(screen.getByText('Error fetching movies')).toBeInTheDocument()
   })
 
   it('should fetch movies on first render', async () => {
-    renderWithProviders(<Movies viewTrailer={viewTrailer} />)
+    renderWithProviders(<Movies />)
     await waitFor(() => expect(useGetMoviesMock).toHaveBeenCalledTimes(1))
+  })
+
+  it('should initialize infinite scroll functionality', async () => {
+    renderAppSelectMock(moviesMock)
+    useInfiniteScrollMock.mockReturnValue(jest.fn())
+    const { getByTestId } = renderWithProviders(<Movies />)
+    fireEvent.scroll(getByTestId('movies'), { target: { scrollTop: 100 } })
+    await waitFor(() => expect(useInfiniteScrollMock).toHaveBeenCalledTimes(1))
   })
 })

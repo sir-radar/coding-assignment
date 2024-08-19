@@ -2,7 +2,7 @@ import { render, screen, act } from '@testing-library/react'
 import YoutubePlayer from '../components/ui/YoutubePlayer'
 
 describe('YoutubePlayer', () => {
-  it('renders loading state', async () => {
+  it('should render loading state', async () => {
     await act(async () => {
       render(<YoutubePlayer videoKey='' loading={true} error='' />)
     })
@@ -10,7 +10,7 @@ describe('YoutubePlayer', () => {
     expect(screen.getByTestId('loader')).toBeInTheDocument()
   })
 
-  it('renders error state', async () => {
+  it('should render error state', async () => {
     await act(async () => {
       render(<YoutubePlayer videoKey='' loading={false} error='Error loading trailer' />)
     })
@@ -18,7 +18,7 @@ describe('YoutubePlayer', () => {
     expect(screen.getByText('Error loading trailer')).toBeInTheDocument()
   })
 
-  it('renders video player when videoKey is provided', async () => {
+  it('should render video player when videoKey is provided', async () => {
     const videoKey = 'some-video-key'
     await act(async () => {
       render(<YoutubePlayer videoKey={videoKey} loading={false} error='' />)
@@ -26,7 +26,7 @@ describe('YoutubePlayer', () => {
     expect(screen.getByTestId('youtube-player')).toBeInTheDocument()
   })
 
-  it('renders message when videoKey is not provided', async () => {
+  it('should render message when videoKey is not provided', async () => {
     await act(async () => {
       render(<YoutubePlayer videoKey='' loading={false} error='' />)
     })

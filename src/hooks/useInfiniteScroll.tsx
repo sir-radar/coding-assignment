@@ -1,34 +1,34 @@
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback } from 'react'
 
-const useInfiniteScroll = (callback: (query: string) => void, query?: string | null) => {
-  const observerRef = useRef<IntersectionObserver | null>(null);
+export const useInfiniteScroll = (callback: (query: string) => void, query?: string | null) => {
+  const observerRef = useRef<IntersectionObserver | null>(null)
 
-  const sentinelRef = useCallback((node: HTMLDivElement) => {
-    if (!node) return;
+  const sentinelRef = useCallback(
+    (node: HTMLDivElement) => {
+      if (!node) return
 
-    if (observerRef.current) {
-      observerRef.current.disconnect();
-    }
+      if (observerRef.current) {
+        observerRef.current.disconnect()
+      }
 
-    observerRef.current = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          callback(query || '');
-        }
-      });
-    });
+      observerRef.current = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            callback(query || '')
+          }
+        })
+      })
 
-    observerRef.current.observe(node);
-
-  }, [callback, query]);
+      observerRef.current.observe(node)
+    },
+    [callback, query]
+  )
 
   useEffect(() => {
     return () => {
-      observerRef.current?.disconnect();
-    };
-  }, []);
+      observerRef.current?.disconnect()
+    }
+  }, [])
 
-  return sentinelRef;
-};
-
-export default useInfiniteScroll;
+  return sentinelRef
+}

@@ -13,7 +13,6 @@ import { useTrailerContext } from './hooks/useTrailerContext';
 import './app.scss'
 
 
-
 const App = () => {
   const deBounceTime = 700
   const [searchParams] = useSearchParams()

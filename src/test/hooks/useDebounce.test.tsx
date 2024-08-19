@@ -6,7 +6,7 @@ describe('useDebounce', () => {
     const callback = jest.fn();
     const delay = 100;
     const { result } = renderHook(() => useDebounce(callback, delay));
-    result.current();
+    result.current('');
     expect(callback).not.toHaveBeenCalled();
   });
 
@@ -14,7 +14,7 @@ describe('useDebounce', () => {
     const callback = jest.fn();
     const delay = 100;
     const { result } = renderHook(() => useDebounce(callback, delay));
-    result.current();
+    result.current('');
     await new Promise(resolve => setTimeout(resolve, delay + 10));
     expect(callback).toHaveBeenCalledTimes(1);
   });
@@ -23,8 +23,8 @@ describe('useDebounce', () => {
     const callback = jest.fn();
     const delay = 100;
     const { result } = renderHook(() => useDebounce(callback, delay));
-    result.current();
-    result.current();
+    result.current('');
+    result.current('');
     await new Promise(resolve => setTimeout(resolve, delay + 10));
     expect(callback).toHaveBeenCalledTimes(1);
   });
@@ -33,7 +33,7 @@ describe('useDebounce', () => {
     const callback = jest.fn();
     const delay = 100;
     const { result, unmount } = renderHook(() => useDebounce(callback, delay));
-    result.current();
+    result.current('');
     unmount();
     await new Promise(resolve => setTimeout(resolve, delay + 10));
     expect(callback).not.toHaveBeenCalled();

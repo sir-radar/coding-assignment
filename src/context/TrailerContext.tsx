@@ -1,28 +1,28 @@
 // src/context/ModalContext.tsx
-import React, { createContext, ReactNode } from 'react';
-import { useGetMovie } from '../hooks/useGetMovie';
-import { useModal } from '../hooks/useModal';
-import { IMovie } from '../types/movie';
+import React, { createContext, ReactNode } from 'react'
+import { useGetMovie } from '../hooks/useGetMovie'
+import { useModal } from '../hooks/useModal'
+import { IMovie } from '../types/movie'
 
 interface TrailerContextProps {
-  videoKey?: string;
-  loading: boolean;
-  error?: string;
-  isOpen: boolean;
-  viewTrailer: (movie: IMovie) => void;
-  closeModal: () => void;
+  videoKey?: string
+  loading: boolean
+  error?: string
+  isOpen: boolean
+  viewTrailer: (movie: IMovie) => void
+  closeModal: () => void
 }
 
-export const TrailerContext = createContext<TrailerContextProps | undefined>(undefined);
+export const TrailerContext = createContext<TrailerContextProps | undefined>(undefined)
 
 export const TrailerProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const { videoKey, loading, error, getMovie } = useGetMovie();
-  const { isOpen, openModal, closeModal } = useModal();
+  const { videoKey, loading, error, getMovie } = useGetMovie()
+  const { isOpen, openModal, closeModal } = useModal()
 
   const viewTrailer = (movie: IMovie) => {
-    getMovie(movie.id);
-    openModal();
-  };
+    getMovie(movie.id)
+    openModal()
+  }
 
   return (
     <TrailerContext.Provider
@@ -32,10 +32,10 @@ export const TrailerProvider: React.FC<{ children: ReactNode }> = ({ children })
         error,
         isOpen,
         viewTrailer,
-        closeModal,
+        closeModal
       }}
     >
       {children}
     </TrailerContext.Provider>
-  );
-};
+  )
+}

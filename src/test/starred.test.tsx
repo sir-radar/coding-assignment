@@ -8,12 +8,10 @@ jest.mock('../hooks/useAppSelector', () => ({
   useAppSelector: jest.fn()
 }))
 
-const viewTrailerMock = jest.fn()
-
 describe('Starred component', () => {
   it('shlould render with starred movies', () => {
     renderAppSelectMock([], moviesMock, [])
-    renderWithProviders(<Starred viewTrailer={viewTrailerMock} />)
+    renderWithProviders(<Starred />)
 
     const starredMovies = screen.getByTestId('starred-movies')
     expect(starredMovies).toBeInTheDocument()
@@ -21,7 +19,7 @@ describe('Starred component', () => {
 
   it('should render with no starred movies', () => {
     renderAppSelectMock([])
-    renderWithProviders(<Starred viewTrailer={viewTrailerMock} />)
+    renderWithProviders(<Starred />)
 
     const emptyMessage = screen.getByTestId('empty-strarred-message')
     expect(emptyMessage).toBeInTheDocument()
@@ -31,7 +29,7 @@ describe('Starred component', () => {
     renderAppSelectMock([], moviesMock, [])
     const handleClearAllStarred = jest.spyOn(starredSlice.actions, 'clearAllStarred')
 
-    renderWithProviders(<Starred viewTrailer={() => {}} />)
+    renderWithProviders(<Starred />)
 
     const button = screen.getByText('Remove All Starred')
     fireEvent.click(button)
