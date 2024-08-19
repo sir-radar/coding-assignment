@@ -1,4 +1,5 @@
 import CloseButton from './CloseButton'
+import Image from './Image'
 
 import starredSlice from '../../data/starredSlice'
 import watchLaterSlice from '../../data/watchLaterSlice'
@@ -73,8 +74,7 @@ const Movie = ({ movie, viewTrailer }: MovieProps) => {
               View Trailer
             </button>
           </div>
-          <img
-            loading='lazy'
+          <Image
             className='center-block'
             src={movie.poster_path ? `${ENDPOINT_MOVIE_POSTER}/${movie.poster_path}` : placeholder}
             alt='Movie poster'
