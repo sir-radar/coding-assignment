@@ -1,4 +1,3 @@
-import { forwardRef } from 'react'
 import CloseButton from './CloseButton'
 
 import starredSlice from '../../data/starredSlice'
@@ -19,19 +18,11 @@ interface MovieProps {
 }
 
 
-const Movie = forwardRef<HTMLDivElement,MovieProps>(({ movie, viewTrailer }, ref) => {
+const Movie = ({ movie, viewTrailer }: MovieProps) => {
   const { starred, watchLater } = useAppSelector((state) => state);
 	const { starMovie, unstarMovie } = starredSlice.actions
 	const { addToWatchLater, removeFromWatchLater } = watchLaterSlice.actions
 	const dispatch = useAppDispatch();
-
-	const setRef = (node: HTMLDivElement) => {
-    if (ref && typeof ref === 'function') {
-      ref(node);
-    } else if (ref && 'current' in ref) {
-      ref.current = node;
-    }
-  };
 
   const toggleStar = () => {
 		const isStarred = starred.starredMovies.some(m => m.id === movie.id);
@@ -59,7 +50,7 @@ const Movie = forwardRef<HTMLDivElement,MovieProps>(({ movie, viewTrailer }, ref
   }
 
   return (
-    <div ref={setRef} className="wrapper col-3 col-sm-4 col-md-3 col-lg-3 col-xl-2">
+    <div className="wrapper col-3 col-sm-4 col-md-3 col-lg-3 col-xl-2">
       <div className="card" data-testid="movie-card" onClick={(e) => e.currentTarget.classList.add('opened')} >
         <div className="card-body text-center">
 					<div className="overlay" />
@@ -82,6 +73,6 @@ const Movie = forwardRef<HTMLDivElement,MovieProps>(({ movie, viewTrailer }, ref
         </div>
     </div>
   )
-})
+}
 
 export default Movie

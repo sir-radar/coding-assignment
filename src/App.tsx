@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { createSearchParams, useSearchParams, useNavigate } from "react-router-dom"
+import { createSearchParams, useNavigate } from "react-router-dom"
 import 'reactjs-popup/dist/index.css'
 import AppRoutes from './routes';
 
@@ -15,10 +15,8 @@ import './app.scss'
 
 const App = () => {
   const deBounceTime = 700
-  const [searchParams] = useSearchParams()
-  const searchQuery = searchParams.get('search')
   const navigate = useNavigate()
-	const getMovies = useGetMovies(searchQuery)
+	const getMovies = useGetMovies()
   const containerRef = useRef<HTMLDivElement>(null)
   const { isOpen, closeModal, videoKey, loading, error } = useTrailerContext()
 
@@ -31,7 +29,7 @@ const App = () => {
   }, deBounceTime);
 
   const searchMovies = (query: string) => {
-    containerRef.current?.scrollIntoView()
+    containerRef.current?.scrollIntoView({ behavior: 'smooth' })
     getSearchResults(query)
   }
 

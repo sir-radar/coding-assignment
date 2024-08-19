@@ -3,7 +3,6 @@ import Movies from '../components/pages/Movies'
 import { renderAppSelectMock, renderWithProviders } from './utils'
 import { moviesMock } from './movies.mocks'
 import { useGetMovies } from '../hooks/useGetMovies'
-import { useAppSelector } from '../hooks/useAppSelector'
 import { useTrailerContext } from '../hooks/useTrailerContext'
 import { useInfiniteScroll } from '../hooks/useInfiniteScroll'
 
@@ -22,15 +21,14 @@ jest.mock('../hooks/useInfiniteScroll')
 
 describe('Movies component', () => {
   let useGetMoviesMock: jest.Mock
-  let useAppSelectorMock: jest.Mock
-  let useTrailerContextMock: jest.Mock
+  // let useTrailerContextMock: jest.Mock
   let useInfiniteScrollMock: jest.Mock
 
   beforeEach(() => {
     renderAppSelectMock()
 
-    useGetMoviesMock = (useGetMovies as jest.Mock).mockReturnValue(() => jest.fn())
-    useTrailerContextMock = (useTrailerContext as jest.Mock).mockReturnValue({
+     useGetMoviesMock = (useGetMovies as jest.Mock).mockReturnValue(jest.fn());
+    (useTrailerContext as jest.Mock).mockReturnValue({
       videoKey: '',
       loading: false,
       error: '',
@@ -40,7 +38,6 @@ describe('Movies component', () => {
     })
 
     useGetMoviesMock = useGetMovies as jest.Mock
-    useAppSelectorMock = useAppSelector as jest.Mock
     useInfiniteScrollMock = useInfiniteScroll as jest.Mock
   })
 

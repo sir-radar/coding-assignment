@@ -34,7 +34,7 @@ describe('useInfiniteScroll', () => {
     expect(typeof result.current).toBe('function');
   });
 
-  it('should call the callback when the observed node is intersecting', () => {
+  it('should not call the callback when the observed node is intersecting for the first time', () => {
     const callback = jest.fn();
     const { result } = renderHook(() => useInfiniteScroll(callback));
 
@@ -47,6 +47,26 @@ describe('useInfiniteScroll', () => {
     // Simulate an intersection
     const mockEntries = [{ isIntersecting: true }];
     act(() => {
+      intersectionObserverMock.mock.calls[0][0](mockEntries);
+    });
+
+    expect(callback).not.toHaveBeenCalledTimes(1);
+  });
+
+  it('should call the callback when the observed node is intersecting for the second time', () => {
+    const callback = jest.fn();
+    const { result } = renderHook(() => useInfiniteScroll(callback));
+
+    const node = document.createElement('div');
+
+    act(() => {
+      result.current(node);
+    });
+
+    // Simulate an intersection
+    const mockEntries = [{ isIntersecting: true }];
+    act(() => {
+      intersectionObserverMock.mock.calls[0][0](mockEntries);
       intersectionObserverMock.mock.calls[0][0](mockEntries);
     });
 
