@@ -1,3 +1,4 @@
+import { forwardRef } from 'react'
 import CloseButton from './CloseButton'
 
 import starredSlice from '../../data/starredSlice'
@@ -18,8 +19,7 @@ interface MovieProps {
 }
 
 
-const Movie = ({ movie, viewTrailer }: MovieProps) => {
-
+const Movie = forwardRef<HTMLDivElement,MovieProps>(({ movie, viewTrailer }, ref) => {
   const { starred, watchLater } = useAppSelector((state) => state);
 	const { starMovie, unstarMovie } = starredSlice.actions
 	const { addToWatchLater, removeFromWatchLater } = watchLaterSlice.actions
@@ -50,8 +50,8 @@ const Movie = ({ movie, viewTrailer }: MovieProps) => {
 		e?.currentTarget?.parentElement?.classList?.remove('opened')
   }
 
-    return (
-    <div className="wrapper col-3 col-sm-4 col-md-3 col-lg-3 col-xl-2">
+  return (
+    <div ref={ref} className="wrapper col-3 col-sm-4 col-md-3 col-lg-3 col-xl-2">
       <div className="card" data-testid="movie-card" onClick={(e) => e.currentTarget.classList.add('opened')} >
         <div className="card-body text-center">
 					<div className="overlay" />
@@ -73,7 +73,7 @@ const Movie = ({ movie, viewTrailer }: MovieProps) => {
 					<CloseButton handleClick={closeCard}/>
         </div>
     </div>
-    )
-}
+  )
+})
 
 export default Movie

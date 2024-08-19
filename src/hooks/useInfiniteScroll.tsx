@@ -1,32 +1,34 @@
-import { useEffect, useCallback, useRef } from 'react'
+import { useEffect, useRef, useCallback } from 'react';
 
-type CallbackType = (query: string) => void
+const useInfiniteScroll = (callback: (query: string) => void, query?: string | null) => {
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
-export const useInfiniteScroll = (callback: CallbackType, total_pages: number, query?: string | null) => {
-  const currentPage = useRef<number>(1)
+  const sentinelRef = useCallback((node: HTMLDivElement) => {
+    if (!node) return;
 
-  const initInfiniteScroll = useCallback(() => {
-    const { innerHeight } = window
-    const { scrollTop, scrollHeight } = document.documentElement
-
-    if (innerHeight + scrollTop + 1 >= scrollHeight) {
-      currentPage.current += 1
-      if (currentPage.current <= total_pages) {
-        callback(query || '')
-      }
+    if (observerRef.current) {
+      observerRef.current.disconnect();
     }
-  }, [query, total_pages, callback])
 
-  const resetInfiniteScroll = useCallback(() => {
-    window.removeEventListener('scroll', initInfiniteScroll)
-  }, [initInfiniteScroll])
+    observerRef.current = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          callback(query || '');
+        }
+      });
+    });
+
+    observerRef.current.observe(node);
+
+  }, [callback, query]);
 
   useEffect(() => {
-    window.addEventListener('scroll', initInfiniteScroll)
     return () => {
-      resetInfiniteScroll()
-    }
-  }, [query, initInfiniteScroll, resetInfiniteScroll])
+      observerRef.current?.disconnect();
+    };
+  }, []);
 
-  return { currentPage, initInfiniteScroll, resetInfiniteScroll }
-}
+  return sentinelRef;
+};
+
+export default useInfiniteScroll;
