@@ -5,6 +5,7 @@ import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { useTrailerContext } from '../../hooks/useTrailerContext'
 
 import { Movie } from '../ui'
+import Heading from '../ui/Heading'
 
 import watchLaterSlice from '../../data/watchLaterSlice'
 
@@ -20,7 +21,9 @@ const WatchLater = () => {
     <div className='starred' data-testid='watch-later-div'>
       {watchLater.watchLaterMovies.length > 0 && (
         <div data-testid='watch-later-movies' className='starred-movies'>
-          <h6 className='header'>Watch Later List</h6>
+          <Heading level={6} className='header'>
+            Watch Later List
+          </Heading>
           <div className='row'>
             {watchLater.watchLaterMovies.map((movie) => (
               <Movie movie={movie} key={movie.id} viewTrailer={viewTrailer} />

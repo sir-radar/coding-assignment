@@ -1,5 +1,6 @@
 import CloseButton from './CloseButton'
 import Image from './Image'
+import Heading from './Heading'
 
 import starredSlice from '../../data/starredSlice'
 import watchLaterSlice from '../../data/watchLaterSlice'
@@ -80,8 +81,12 @@ const Movie = ({ movie, viewTrailer }: MovieProps) => {
             alt='Movie poster'
           />
         </div>
-        <h6 className='title mobile-card'>{movie.title}</h6>
-        <h6 className='title'>{movie.title}</h6>
+        <Heading level={6} className='title mobile-card'>
+          {movie.title}
+        </Heading>
+        <Heading level={6} className='title'>
+          {movie.title}
+        </Heading>
         <CloseButton handleClick={closeCard} />
       </div>
     </div>

@@ -1,7 +1,11 @@
+import { Heading } from '../ui'
+
 export default function PageNotFound() {
   return (
     <div>
-      <h1 className='not-found'>Page Not Found</h1>
+      <Heading level={1} className='not-found'>
+        Page Not Found
+      </Heading>
     </div>
   )
 }

@@ -5,7 +5,7 @@ import { useGetMovies } from '../../hooks/useGetMovies'
 import { useTrailerContext } from '../../hooks/useTrailerContext'
 import { useInfiniteScroll } from '../../hooks/useInfiniteScroll'
 
-import { Movie, Loader } from '../ui'
+import { Movie, Loader, Heading } from '../ui'
 
 import { FetchType } from '../../types/movie'
 
@@ -59,9 +59,9 @@ const Movies = () => {
           return <Movie movie={movie} key={movie.id} viewTrailer={viewTrailer} />
         })}
       </div>
-      {movies.fetchStatus === 'success' && movies.movies.results?.length === 0 ? <h4>No movies found</h4> : null}
+      {movies.fetchStatus === 'success' && movies.movies.results?.length === 0 ? <Heading level={4}>No movies found</Heading> : null}
       {movies.fetchStatus === 'loading' && <Loader />}
-      {movies.fetchStatus === 'error' && <h4>Error fetching movies</h4>}
+      {movies.fetchStatus === 'error' && <Heading level={4}>Error fetching movies</Heading>}
       {movies.movies.results?.length > 0 ? <div ref={setRef} style={{ height: '10px' }}></div> : null}
     </>
   )

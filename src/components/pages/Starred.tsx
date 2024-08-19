@@ -4,7 +4,7 @@ import { useAppSelector } from '../../hooks/useAppSelector'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { useTrailerContext } from '../../hooks/useTrailerContext'
 
-import { Movie } from '../ui'
+import { Movie, Heading } from '../ui'
 
 import starredSlice from '../../data/starredSlice'
 
@@ -24,7 +24,9 @@ const Starred = () => {
     <div className='starred' data-testid='starred'>
       {starred.starredMovies.length > 0 && (
         <div data-testid='starred-movies' className='starred-movies'>
-          <h6 className='header'>Starred Movies</h6>
+          <Heading level={6} className='header'>
+            Starred Movies
+          </Heading>
           <div className='row'>
             {starred.starredMovies.map((movie) => (
               <Movie key={movie.id} movie={movie} viewTrailer={viewTrailer} />

@@ -1,5 +1,6 @@
 import ReactPlayer from 'react-player'
 import Loader from './Loader'
+import Heading from './Heading'
 
 interface YoutubePlayerProps {
   videoKey: string
@@ -9,7 +10,7 @@ interface YoutubePlayerProps {
 
 const YoutubePlayer = ({ videoKey, loading, error }: YoutubePlayerProps) => {
   if (loading) return <Loader />
-  if (error) return <h6>Error loading trailer</h6>
+  if (error) return <Heading level={6}>Error loading trailer</Heading>
   return videoKey ? (
     <ReactPlayer
       className='video-player'
@@ -20,7 +21,7 @@ const YoutubePlayer = ({ videoKey, loading, error }: YoutubePlayerProps) => {
     />
   ) : (
     <div style={{ padding: '30px' }}>
-      <h6>no trailer available. Try another movie</h6>
+      <Heading level={6}>no trailer available. Try another movie</Heading>
     </div>
   )
 }
