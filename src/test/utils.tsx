@@ -94,8 +94,8 @@ export const renderAppSelectMock = (
   })
 }
 
-export const renderAppDispatchMock = () => {
-  return (useAppDispatch as jest.Mock).mockReturnValue(jest.fn())
+export const renderAppDispatchMock = (fn = jest.fn()) => {
+  return (useAppDispatch as jest.Mock).mockReturnValue(fn)
 }
 
 export const useGetMovieMock = (getMovieFn = jest.fn()) => {
