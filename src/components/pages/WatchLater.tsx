@@ -4,7 +4,7 @@ import { useAppSelector } from '../../hooks/useAppSelector'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { useTrailerContext } from '../../hooks/useTrailerContext'
 
-import { Movie } from '../ui'
+import { Button, Movie } from '../ui'
 import Heading from '../ui/Heading'
 
 import watchLaterSlice from '../../data/watchLaterSlice'
@@ -16,6 +16,10 @@ const WatchLater = () => {
   const { removeAllWatchLater } = watchLaterSlice.actions
   const { viewTrailer } = useTrailerContext()
   const dispatch = useAppDispatch()
+
+   const handleClearAllWatchLater = () => {
+   dispatch(removeAllWatchLater())
+  }
 
   return (
     <div className='starred' data-testid='watch-later-div'>
@@ -31,9 +35,9 @@ const WatchLater = () => {
           </div>
 
           <footer className='text-center'>
-            <button className='btn btn-primary' onClick={() => dispatch(removeAllWatchLater())}>
+            <Button handleClick={handleClearAllWatchLater}>
               Empty list
-            </button>
+            </Button>
           </footer>
         </div>
       )}

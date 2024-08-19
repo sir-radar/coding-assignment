@@ -4,7 +4,7 @@ import { useAppSelector } from '../../hooks/useAppSelector'
 import { useAppDispatch } from '../../hooks/useAppDispatch'
 import { useTrailerContext } from '../../hooks/useTrailerContext'
 
-import { Movie, Heading } from '../ui'
+import { Movie, Heading, Button } from '../ui'
 
 import starredSlice from '../../data/starredSlice'
 
@@ -34,9 +34,9 @@ const Starred = () => {
           </div>
 
           <footer className='text-center'>
-            <button className='btn btn-primary' onClick={handleClearAllStarred}>
+            <Button handleClick={handleClearAllStarred}>
               Remove All Starred
-            </button>
+            </Button>
           </footer>
         </div>
       )}
