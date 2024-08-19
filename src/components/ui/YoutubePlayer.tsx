@@ -1,8 +1,8 @@
 import ReactPlayer from 'react-player'
-import Loader from './Loader';
+import Loader from './Loader'
 
 interface YoutubePlayerProps {
-  videoKey: string;
+  videoKey: string
   error?: string
   loading?: boolean
 }
@@ -10,18 +10,19 @@ interface YoutubePlayerProps {
 const YoutubePlayer = ({ videoKey, loading, error }: YoutubePlayerProps) => {
   if (loading) return <Loader />
   if (error) return <h6>Error loading trailer</h6>
-  return (
-    videoKey ?
-        <ReactPlayer
-          className="video-player"
-          url={`https://www.youtube.com/watch?v=${videoKey}`}
-          controls={true}
-          playing={true}
-          data-testid="youtube-player"
-        />
-
-      : <div style={{ padding: "30px" }}><h6>no trailer available. Try another movie</h6></div>
-  );
+  return videoKey ? (
+    <ReactPlayer
+      className='video-player'
+      url={`https://www.youtube.com/watch?v=${videoKey}`}
+      controls={true}
+      playing={true}
+      data-testid='youtube-player'
+    />
+  ) : (
+    <div style={{ padding: '30px' }}>
+      <h6>no trailer available. Try another movie</h6>
+    </div>
+  )
 }
 
-export default YoutubePlayer;
+export default YoutubePlayer

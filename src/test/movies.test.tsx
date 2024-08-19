@@ -21,14 +21,16 @@ jest.mock('../hooks/useInfiniteScroll')
 
 describe('Movies component', () => {
   let useGetMoviesMock: jest.Mock
-  // let useTrailerContextMock: jest.Mock
   let useInfiniteScrollMock: jest.Mock
 
   beforeEach(() => {
     renderAppSelectMock()
+    useGetMoviesMock = (useGetMovies as jest.Mock).mockReturnValue(jest.fn())
 
-     useGetMoviesMock = (useGetMovies as jest.Mock).mockReturnValue(jest.fn());
-    (useTrailerContext as jest.Mock).mockReturnValue({
+    useGetMoviesMock = useGetMovies as jest.Mock
+    useInfiniteScrollMock = useInfiniteScroll as jest.Mock
+
+    ;(useTrailerContext as jest.Mock).mockReturnValue({
       videoKey: '',
       loading: false,
       error: '',
@@ -36,9 +38,6 @@ describe('Movies component', () => {
       viewTrailer: jest.fn(),
       closeModal: jest.fn()
     })
-
-    useGetMoviesMock = useGetMovies as jest.Mock
-    useInfiniteScrollMock = useInfiniteScroll as jest.Mock
   })
 
   it('should render with no movies', () => {
