@@ -12,7 +12,7 @@ import watchLaterSlice from '../../data/watchLaterSlice'
 import '../../styles/starred.scss'
 
 const WatchLater = () => {
-  const { watchLater } = useAppSelector((state) => state)
+  const { watchLater } = useAppSelector(state => state)
   const { removeAllWatchLater } = watchLaterSlice.actions
   const { viewTrailer } = useTrailerContext()
   const dispatch = useAppDispatch()

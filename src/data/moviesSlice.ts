@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { FetchType, IMovie, MovieSlice } from '../types/movie'
+import { FetchStatus, FetchType, IMovie, MovieSlice } from '../types/movie'
 
 interface FetchMovieParams {
   apiUrl: string
@@ -23,7 +23,7 @@ const initialState: MovieSlice = {
     results: [],
     total_pages: 0
   },
-  fetchStatus: ''
+  fetchStatus: FetchStatus.IDLE
 }
 
 const moviesSlice = createSlice({
@@ -35,7 +35,7 @@ const moviesSlice = createSlice({
       .addCase(fetchMovies.fulfilled, (state, action) => {
         if (action.payload.type === FetchType.SEARCH) {
           state.movies = action.payload.response
-          state.fetchStatus = 'success'
+          state.fetchStatus = FetchStatus.SUCCESS
           return
         }
         // When on the first request page in infinite scroll mode, reset existing movie list to empty array
@@ -45,13 +45,13 @@ const moviesSlice = createSlice({
         // When on the next request page in infinite scroll mode, prepend new movies
         const results: IMovie[] = action.payload.response?.results || []
         state.movies = { results: [...state.movies.results, ...results], total_pages: action.payload.response?.total_pages }
-        state.fetchStatus = 'success'
+        state.fetchStatus = FetchStatus.SUCCESS
       })
       .addCase(fetchMovies.pending, (state) => {
-        state.fetchStatus = 'loading'
+        state.fetchStatus = FetchStatus.LOADING
       })
       .addCase(fetchMovies.rejected, (state) => {
-        state.fetchStatus = 'error'
+        state.fetchStatus = FetchStatus.ERROR
       })
   }
 })

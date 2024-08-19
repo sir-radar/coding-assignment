@@ -11,10 +11,17 @@ export interface MovieSlice {
     results: IMovie[]
     total_pages: number
   }
-  fetchStatus: string
+  fetchStatus: FetchStatus
 }
 
 export enum FetchType {
   SEARCH = 'search',
   INFINITE = 'infinite'
+}
+
+export enum FetchStatus {
+  SUCCESS = 'success',
+  LOADING = 'loading',
+  ERROR = 'error',
+  IDLE = ''
 }

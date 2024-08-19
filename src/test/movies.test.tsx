@@ -5,6 +5,7 @@ import { moviesMock } from './movies.mocks'
 import { useGetMovies } from '../hooks/useGetMovies'
 import { useTrailerContext } from '../hooks/useTrailerContext'
 import { useInfiniteScroll } from '../hooks/useInfiniteScroll'
+import { FetchStatus } from '../types/movie'
 
 jest.mock('../hooks/useAppSelector', () => ({
   useAppSelector: jest.fn()
@@ -29,7 +30,6 @@ describe('Movies component', () => {
 
     useGetMoviesMock = useGetMovies as jest.Mock
     useInfiniteScrollMock = useInfiniteScroll as jest.Mock
-
     ;(useTrailerContext as jest.Mock).mockReturnValue({
       videoKey: '',
       loading: false,
@@ -54,13 +54,13 @@ describe('Movies component', () => {
   })
 
   it('should render with loading state', () => {
-    renderAppSelectMock([], [], [], 'loading')
+    renderAppSelectMock([], [], [], FetchStatus.LOADING)
     renderWithProviders(<Movies />)
     expect(screen.getByTestId('loader')).toBeInTheDocument()
   })
 
   it('should render with error state', () => {
-    renderAppSelectMock([], [], [], 'error')
+    renderAppSelectMock([], [], [], FetchStatus.ERROR)
     renderWithProviders(<Movies />)
     expect(screen.getByText('Error fetching movies')).toBeInTheDocument()
   })

@@ -1,7 +1,7 @@
+import { useCallback } from 'react'
 import { Link, NavLink } from 'react-router-dom'
-import { useSelector } from 'react-redux'
 
-import { IRootState } from '../../data/store'
+import { useAppSelector } from '../../hooks/useAppSelector'
 
 import '../../styles/header.scss'
 
@@ -10,7 +10,11 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ searchMovies }) => {
-  const { starredMovies } = useSelector((state: IRootState) => state.starred)
+  const { starred } = useAppSelector(state => state)
+
+  const handleSearch = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
+    searchMovies(e.currentTarget.value)
+  }, [])
 
   return (
     <header>
@@ -20,10 +24,10 @@ const Header: React.FC<HeaderProps> = ({ searchMovies }) => {
 
       <nav>
         <NavLink to='/starred' data-testid='nav-starred' className='nav-starred'>
-          {starredMovies.length > 0 ? (
+          {starred.starredMovies.length > 0 ? (
             <>
               <i className='bi bi-star-fill bi-star-fill-white' />
-              <sup className='star-number'>{starredMovies.length}</sup>
+              <sup className='star-number'>{starred.starredMovies.length}</sup>
             </>
           ) : (
             <i className='bi bi-star' />
@@ -38,7 +42,7 @@ const Header: React.FC<HeaderProps> = ({ searchMovies }) => {
         <input
           type='search'
           data-testid='search-movies'
-          onKeyUp={(e) => searchMovies(e.currentTarget.value)}
+          onKeyUp={handleSearch}
           className='form-control rounded'
           placeholder='Search movies...'
           aria-label='Search movies'

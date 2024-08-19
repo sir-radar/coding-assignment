@@ -8,7 +8,7 @@ import moviesSlice from '../data/moviesSlice'
 import starredSlice from '../data/starredSlice'
 import watchLaterSlice from '../data/watchLaterSlice'
 import { IRootState } from '../data/store'
-import { IMovie } from '../types/movie'
+import { FetchStatus, IMovie } from '../types/movie'
 import { useAppSelector } from '../hooks/useAppSelector'
 import { useAppDispatch } from '../hooks/useAppDispatch'
 import { useGetMovie } from '../hooks/useGetMovie'
@@ -22,7 +22,7 @@ const preloadedState: IRootState = {
       results: [],
       total_pages: 0
     },
-    fetchStatus: ''
+    fetchStatus: FetchStatus.IDLE
   },
   starred: {
     starredMovies: []
@@ -75,21 +75,21 @@ export const renderAppSelectMock = (
   moviesData: IMovie[] = [],
   starredData: IMovie[] = [],
   watchLaterData: IMovie[] = [],
-  fetchStatus: string = ''
+  fetchStatus: FetchStatus = FetchStatus.IDLE
 ) => {
   return (useAppSelector as jest.Mock).mockReturnValue({
     movies: {
       movies: {
         total_pages: 1,
-        results: moviesData
+        results: moviesData ?? []
       },
       fetchStatus
     },
     starred: {
-      starredMovies: starredData
+      starredMovies: starredData ?? []
     },
     watchLater: {
-      watchLaterMovies: watchLaterData
+      watchLaterMovies: watchLaterData ?? []
     }
   })
 }

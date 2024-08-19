@@ -11,7 +11,7 @@ import starredSlice from '../../data/starredSlice'
 import '../../styles/starred.scss'
 
 const Starred = () => {
-  const { starred } = useAppSelector((state) => state)
+  const { starred } = useAppSelector(state => state)
   const { viewTrailer } = useTrailerContext()
 
   const dispatch = useAppDispatch()

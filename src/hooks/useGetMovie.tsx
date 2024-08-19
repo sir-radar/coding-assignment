@@ -44,7 +44,9 @@ export const useGetMovie = (): UseGetMovieResult => {
       }
     } catch (err: unknown) {
       if (err instanceof Error) {
-        setError(err.message || 'Something went wrong')
+        setError(err.message)
+      } else {
+        setError('Something went wrong')
       }
     } finally {
       setLoading(false)

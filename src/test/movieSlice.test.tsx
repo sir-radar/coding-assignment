@@ -1,4 +1,5 @@
 import moviesSlice, { fetchMovies } from '../data/moviesSlice'
+import { FetchStatus } from '../types/movie'
 import { moviesMock } from './movies.mocks'
 
 describe('MovieSlice test', () => {
@@ -10,7 +11,7 @@ describe('MovieSlice test', () => {
           results: [],
           total_pages: 0
         },
-        fetchStatus: ''
+        fetchStatus: FetchStatus.IDLE
       },
       action
     )
@@ -28,7 +29,7 @@ describe('MovieSlice test', () => {
           results: [],
           total_pages: 0
         },
-        fetchStatus: ''
+        fetchStatus: FetchStatus.IDLE
       },
       action
     )
@@ -43,7 +44,7 @@ describe('MovieSlice test', () => {
           results: [],
           total_pages: 0
         },
-        fetchStatus: ''
+        fetchStatus: FetchStatus.IDLE
       },
       action
     )

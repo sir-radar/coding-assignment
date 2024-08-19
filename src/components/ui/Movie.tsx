@@ -1,3 +1,5 @@
+import { useCallback } from 'react'
+
 import CloseButton from './CloseButton'
 import Image from './Image'
 import Heading from './Heading'
@@ -19,7 +21,7 @@ interface MovieProps {
 }
 
 const Movie = ({ movie, viewTrailer }: MovieProps) => {
-  const { starred, watchLater } = useAppSelector((state) => state)
+  const { starred, watchLater } = useAppSelector(state => state)
   const { starMovie, unstarMovie } = starredSlice.actions
   const { addToWatchLater, removeFromWatchLater } = watchLaterSlice.actions
   const dispatch = useAppDispatch()
@@ -44,14 +46,17 @@ const Movie = ({ movie, viewTrailer }: MovieProps) => {
     return watchLater.watchLaterMovies.some((m) => m.id === movie.id)
   }
 
-  const closeCard = (e?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e?.stopPropagation()
+  const closeCard = useCallback((e?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e?.currentTarget?.parentElement?.classList?.remove('opened')
-  }
+  }, [])
+
+  const openCard = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    e.currentTarget.classList.add('opened')
+  }, [])
 
   return (
     <div className='wrapper col-3 col-sm-4 col-md-3 col-lg-3 col-xl-2'>
-      <div className='card' data-testid='movie-card' onClick={(e) => e.currentTarget.classList.add('opened')}>
+      <div className='card' data-testid='movie-card' onClick={openCard}>
         <div className='card-body text-center'>
           <div className='overlay' />
           <div className='info_panel'>

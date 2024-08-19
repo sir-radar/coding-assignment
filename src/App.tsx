@@ -19,7 +19,7 @@ const App = () => {
   const containerRef = useRef<HTMLDivElement>(null)
   const { isOpen, closeModal, videoKey, loading, error } = useTrailerContext()
 
-  const getSearchResults = useDebounce((query: string) => {
+  const getSearchResults = useDebounce(query => {
     navigate({
       pathname: '/',
       search: `?${createSearchParams({ search: query })}`
