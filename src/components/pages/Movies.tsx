@@ -13,7 +13,7 @@ import '../../styles/movies.scss'
 
 const Movies = () => {
   const currentPage = useRef<number>(1)
-  const { movies } = useAppSelector(state => state)
+  const { movies } = useAppSelector((state) => state)
   const [searchParams] = useSearchParams()
   const searchQuery = searchParams.get('search')
   const getMovies = useGetMovies()
@@ -23,7 +23,7 @@ const Movies = () => {
     useCallback(
       (query) => {
         if (currentPage.current <= movies.movies.total_pages) {
-          if (movies.fetchStatus !== FetchStatus.SUCCESS) {
+          if (movies.fetchStatus === FetchStatus.SUCCESS) {
             currentPage.current++
             getMovies(query, currentPage.current, FetchType.INFINITE)
           }
