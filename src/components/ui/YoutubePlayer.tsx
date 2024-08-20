@@ -20,7 +20,7 @@ const YoutubePlayer = ({ videoKey, loading, error }: YoutubePlayerProps) => {
       data-testid='youtube-player'
     />
   ) : (
-    <div style={{ padding: '30px' }}>
+    <div className='empty-trailer'>
       <Heading level={6}>no trailer available. Try another movie</Heading>
     </div>
   )

@@ -62,7 +62,7 @@ const Movies = () => {
       ) : null}
       {movies.fetchStatus === FetchStatus.LOADING && <Loader />}
       {movies.fetchStatus === FetchStatus.ERROR && <Heading level={4}>Error fetching movies</Heading>}
-      {movies.movies.results?.length > 0 ? <div ref={setRef} style={{ height: '10px' }}></div> : null}
+      {movies.movies.results?.length > 0 ? <div ref={setRef} className='sentinel' /> : null}
     </>
   )
 }
