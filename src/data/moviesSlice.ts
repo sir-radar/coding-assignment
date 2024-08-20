@@ -39,14 +39,13 @@ const moviesSlice = createSlice({
           state.fetchStatus = FetchStatus.SUCCESS
           return
         }
-        // When on the first request page in infinite scroll mode, reset existing movie list to empty array
-        if (action.payload.response?.page === 1) {
-          state.movies.results = []
-        }
+
         // When on the next request page in infinite scroll mode, prepend new movies
-        const results: IMovie[] = action.payload.response?.results || []
-        state.movies = { results: [...state.movies.results, ...results], total_pages: action.payload.response?.total_pages || 0 }
-        state.fetchStatus = FetchStatus.SUCCESS
+        if (action.payload.type === FetchType.INFINITE) {
+          const results: IMovie[] = action.payload.response?.results || []
+          state.movies = { results: [...state.movies.results, ...results], total_pages: action.payload.response?.total_pages || 0 }
+          state.fetchStatus = FetchStatus.SUCCESS
+        }
       })
       .addCase(fetchMovies.pending, (state) => {
         state.fetchStatus = FetchStatus.LOADING
