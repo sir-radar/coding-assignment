@@ -37,7 +37,13 @@
       border: none;
       font-size: 35px;
       color: darkgrey;
-      background-color: transparent;
+      background: dimgrey;
+      border-radius: 50%;
+      height: 40px;
+      width: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       @media (max-width: 480px) {
         display: none;
       }

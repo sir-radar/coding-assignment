@@ -21,7 +21,7 @@ interface MovieProps {
 }
 
 const Movie = ({ movie, viewTrailer }: MovieProps) => {
-  const { starred, watchLater } = useAppSelector(state => state)
+  const { starred, watchLater } = useAppSelector((state) => state)
   const { starMovie, unstarMovie } = starredSlice.actions
   const { addToWatchLater, removeFromWatchLater } = watchLaterSlice.actions
   const dispatch = useAppDispatch()
@@ -47,6 +47,7 @@ const Movie = ({ movie, viewTrailer }: MovieProps) => {
   }
 
   const closeCard = useCallback((e?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e?.stopPropagation()
     e?.currentTarget?.parentElement?.classList?.remove('opened')
   }, [])
 
