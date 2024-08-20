@@ -76,19 +76,25 @@ Follow these steps to set up the project locally:
      cd coding-assignment
    ```
 
-2. Install dependencies:
+2. Navigate to this branch:
+
+   ```
+     git checkout ft-app-improvements
+   ```
+
+3. Install dependencies:
 
    ```
      npx nvm use && npm install
    ```
 
-3. Start the application:
+4. Start the application:
 
    ```
      npm start
    ```
 
-4. Open the browser and navigate to http://localhost:3000 and see the application as show below:
+5. Open the browser and navigate to http://localhost:3000 and see the application as show below:
 
    ![Movieland](./public/app.png)
 
