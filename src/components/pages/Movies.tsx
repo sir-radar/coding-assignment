@@ -22,7 +22,7 @@ const Movies = () => {
   const sentinelRef = useInfiniteScroll(
     useCallback(
       (query) => {
-        if (currentPage.current <= movies.movies.total_pages) {
+        if (currentPage.current < movies.movies.total_pages) {
           if (movies.fetchStatus === FetchStatus.SUCCESS) {
             currentPage.current++
             getMovies(query, currentPage.current, FetchType.INFINITE)
