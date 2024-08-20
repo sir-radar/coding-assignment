@@ -10,11 +10,14 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ searchMovies }) => {
-  const { starred } = useAppSelector(state => state)
+  const { starred } = useAppSelector((state) => state)
 
-  const handleSearch = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
-    searchMovies(e.currentTarget.value)
-  }, [])
+  const handleSearch = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      searchMovies(e.currentTarget.value)
+    },
+    [searchMovies]
+  )
 
   return (
     <header>

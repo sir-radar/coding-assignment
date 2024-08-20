@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { FetchStatus, FetchType, IMovie, MovieSlice } from '../types/movie'
+import fetchWrapper from '../utils/fetchWrapper'
 
 interface FetchMovieParams {
   apiUrl: string
@@ -14,8 +15,8 @@ interface Response {
 }
 
 export const fetchMovies = createAsyncThunk('fetch-movies', async ({ apiUrl, type }: FetchMovieParams) => {
-  const response = await fetch(apiUrl)
-  return { response: (await response.json()) as Response, type }
+  const response = await fetchWrapper<Response>(apiUrl)
+  return { response: response.data, type }
 })
 
 const initialState: MovieSlice = {
@@ -34,7 +35,7 @@ const moviesSlice = createSlice({
     builder
       .addCase(fetchMovies.fulfilled, (state, action) => {
         if (action.payload.type === FetchType.SEARCH) {
-          state.movies = action.payload.response
+          state.movies = action.payload.response || initialState.movies
           state.fetchStatus = FetchStatus.SUCCESS
           return
         }
@@ -44,7 +45,7 @@ const moviesSlice = createSlice({
         }
         // When on the next request page in infinite scroll mode, prepend new movies
         const results: IMovie[] = action.payload.response?.results || []
-        state.movies = { results: [...state.movies.results, ...results], total_pages: action.payload.response?.total_pages }
+        state.movies = { results: [...state.movies.results, ...results], total_pages: action.payload.response?.total_pages || 0 }
         state.fetchStatus = FetchStatus.SUCCESS
       })
       .addCase(fetchMovies.pending, (state) => {

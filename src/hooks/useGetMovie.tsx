@@ -1,4 +1,7 @@
 import { useState, useCallback } from 'react'
+
+import fetchWrapper from '../utils/fetchWrapper'
+
 import { API_KEY, ENDPOINT } from '../constants'
 
 interface UseGetMovieResult {
@@ -30,28 +33,21 @@ export const useGetMovie = (): UseGetMovieResult => {
     setError(undefined)
     setVideoKey(undefined)
 
-    try {
-      const response = await fetch(URL)
-      if (!response.ok) {
-        throw new Error(`Failed to fetch movie with id ${id}`)
-      }
+    const response = await fetchWrapper<VideoData>(URL)
 
-      const videoData: VideoData = await response.json()
+    if (response.error) {
+      setError(response.error || 'Something went wrong')
+    }
+
+    if (response?.data?.videos) {
+      const videoData: VideoData = response.data
 
       if (videoData.videos && videoData.videos.results.length) {
         const trailer = videoData.videos.results.find((vid) => vid.type === 'Trailer')
         setVideoKey(trailer ? trailer.key : videoData.videos.results[0].key)
       }
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        setError(err.message)
-      } else {
-        setError('Something went wrong')
-      }
-    } finally {
-      setLoading(false)
     }
+    setLoading(false)
   }, [])
-
   return { videoKey, loading, error, getMovie }
 }
