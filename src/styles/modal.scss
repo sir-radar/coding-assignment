@@ -1,0 +1,56 @@
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .modal-content {
+    background-color: #fff;
+    padding: 20px;
+    width: 700px;
+    min-height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+
+    .video-player {
+      max-width: 100%;
+      height: 60vw;
+      @media (max-width: 480px) {
+        width: 100% !important;
+      }
+    }
+
+    .empty-trailer {
+      padding: 30px;
+    }
+
+    .close {
+      position: absolute;
+      top: -30px;
+      right: -16px;
+      border: none;
+      font-size: 25px;
+      color: darkgrey;
+      background: dimgrey;
+      border-radius: 50%;
+      height: 40px;
+      width: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      @media (max-width: 480px) {
+        display: none;
+      }
+    }
+  }
+}

@@ -1,0 +1,26 @@
+- Consider adding lint to the codebase to enforce code quality.
+- Consider using typescript for this project for type safety.
+- Initial app dependency installation fails due to incompatible node version and project node-sass. Consider adding a .nvmrc file should be added in project root directory to specify node version compatible with project.
+- Endpoints typos in constants.js on line 3 and 4, slash(/) shouldn’t come before the question mark (?). Consider removing the slash(/)
+- The App component has too many responsibilities, handling search, fetching data, routing, and displaying trailers. Consider breaking down the component into smaller, more focused components and prevent props drilling.
+- Consider moving the div with text “no trailer available. Try another movie” into the YouTubePlayer component.
+- Try and avoid inline css styling
+- Consider moving API calls and data fetching logic to a custom hook or a separate service file to make the component cleaner and more testable.
+- Consider using useCallback and useMemo to memoize callbacks and derived state values that are passed as props to prevent unnecessary re-renders in Header.jsx line 35, Movie.jsx lines 24 and 64.
+- When searching movies, consider debouncing the API calls to avoid excessive requests when the user is typing.
+- There’s no error handling for the API requests. Consider using try-catch blocks or check the response status to handle errors gracefully.
+- Ensure that components handle empty or null states well, especially when no movies or trailers are found.
+- The viewTrailer function logic calls setOpen(true) regardless if videoKey is available or not. on line 56 and 57 in App.js. Consider improving that logic
+- Add a loader when fetching movies or trailers to improve user experience.
+- The line if (!e) var e = window.event is a legacy pattern from older JavaScript versions, particularly for handling events in older versions of Internet Explorer. In modern React with TypeScript, this is unnecessary since the event object is always passed to the event handler. On line 16 in Movie.jsx component
+- The cancelBubble property is a legacy way to stop event propagation and isn't commonly used in modern React development. Instead, you should rely solely on e.stopPropagation() which is more standard and widely supported on line 17 in Movie.jsx component
+- The function myClickHandler on line 15 in Movie.jsx component should be renamed to something more descriptive of the action it performs. Example handleClose
+  closeCard function prop passed down to the Movie.jsx component but never used.
+- In watchLaterSlice.js line 16, there is a typo remveAllWatchLater. Consider renaming it to removeAllWatchLater.
+- In App.js file on line 79, searchParams and setSearchParams props are passed to the Header component where they are not being used. Consider removing the props
+- Unused variables isOpen, closeModal in App.js
+- “no trailer available. Try another movie” text should be hidden on initial page render
+- Avoid inline function in Movie.jsx component on line 31-39 and line 48-54
+- In Movie.jsx component, on line 60 the poster url should be added to constants.js
+- In Header component on line 33, wrapping search input with Link is redundant. Consider removing the Link component
+- Flaky tests in watchLater.test, movie.test.tsx, App.test.tsx. Consider mocking over testing on live data

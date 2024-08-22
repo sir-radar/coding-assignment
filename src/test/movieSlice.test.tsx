@@ -1,0 +1,53 @@
+import moviesSlice, { fetchMovies } from '../data/moviesSlice'
+import { FetchStatus } from '../types/movie'
+import { moviesMock } from './movies.mocks'
+
+describe('MovieSlice test', () => {
+  it('should set loading true while action is pending', () => {
+    const action = { type: fetchMovies.pending }
+    moviesSlice.reducer(
+      {
+        movies: {
+          results: [],
+          total_pages: 0
+        },
+        fetchStatus: FetchStatus.IDLE
+      },
+      action
+    )
+    expect(action).toEqual({ type: fetchMovies.pending })
+  })
+
+  it('should return payload when action is fulfilled', () => {
+    const action = {
+      type: fetchMovies.fulfilled,
+      payload: moviesMock
+    }
+    moviesSlice.reducer(
+      {
+        movies: {
+          results: [],
+          total_pages: 0
+        },
+        fetchStatus: FetchStatus.IDLE
+      },
+      action
+    )
+    expect(action.payload).toBeTruthy()
+  })
+
+  it('should set error when action is rejected', () => {
+    const action = { type: fetchMovies.rejected }
+    moviesSlice.reducer(
+      {
+        movies: {
+          results: [],
+          total_pages: 0
+        },
+        fetchStatus: FetchStatus.IDLE
+      },
+      action
+    )
+    expect(action).toEqual({ type: fetchMovies.rejected })
+  })
+})
